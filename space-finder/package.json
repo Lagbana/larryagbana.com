@@ -1,0 +1,16 @@
+{
+  "name": "space-finder",
+  "version": "1.0.0",
+  "description": "Space-finder app",
+  "main": "index.js",
+  "author": "Larry Agbana",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^18.16.3",
+    "aws-cdk": "^2.77.0",
+    "aws-cdk-lib": "^2.77.0",
+    "constructs": "^10.2.12",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
+  }
+}
