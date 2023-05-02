@@ -2,11 +2,9 @@ import { Stack } from "aws-cdk-lib";
 import type { StackProps } from "aws-cdk-lib";
 import { LambdaIntegration } from "aws-cdk-lib/aws-apigateway";
 import { ITable } from "aws-cdk-lib/aws-dynamodb";
-import {
-  Function as LambdaFunction,
-  Runtime,
-  Code,
-} from "aws-cdk-lib/aws-lambda";
+import { Effect, PolicyStatement } from "aws-cdk-lib/aws-iam";
+import { Runtime, Code } from "aws-cdk-lib/aws-lambda";
+import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { Construct } from "constructs";
 import { join } from "path";
 
@@ -20,14 +18,22 @@ export class LambdaStack extends Stack {
   constructor(scope: Construct, id: string, props: LambdaStackProps) {
     super(scope, id, props);
 
-    const helloLambda = new LambdaFunction(this, "HelloHandler", {
-      handler: "hello.main",
-      runtime: Runtime.NODEJS_16_X,
-      code: Code.fromAsset(join(__dirname, "..", "..", "services")),
+    const helloLambda = new NodejsFunction(this, "HelloHandler", {
+      runtime: Runtime.NODEJS_18_X,
+      handler: "handler",
+      entry: join(__dirname, "..", "..", "services", "hello.ts"),
       environment: {
         TABLE_NAME: props.spacesTable.tableName,
       },
     });
+
+    helloLambda.addToRolePolicy(
+      new PolicyStatement({
+        effect: Effect.ALLOW,
+        actions: ["s3:ListAllMyBuckets", "s3:ListBucket"],
+        resources: ["*"], // bad practice, but we're just playing around
+      })
+    );
 
     this.helloLambdaIntegration = new LambdaIntegration(helloLambda);
   }
