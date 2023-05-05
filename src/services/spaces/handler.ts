@@ -21,6 +21,9 @@ async function handler(
         break;
       case "POST":
         return createSpaces(event, dynamoDBClient);
+      case "DELETE":
+        message = "Hello from DELETE";
+        break;
       default:
         break;
     }
