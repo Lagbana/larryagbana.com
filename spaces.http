@@ -3,4 +3,9 @@ GET https://wl5j7206u2.execute-api.us-east-1.amazonaws.com/prod/spaces
 ###
 
 POST https://wl5j7206u2.execute-api.us-east-1.amazonaws.com/prod/spaces
+content-type: application/json
+
+{
+    "location": "Ottawa"
+}
 ###

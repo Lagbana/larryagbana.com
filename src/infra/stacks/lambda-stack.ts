@@ -10,7 +10,6 @@ import { join } from "path";
 
 interface LambdaStackProps extends StackProps {
   spacesTable: ITable;
-  dynamoDBIntegration: LambdaIntegration;
 }
 
 export class LambdaStack extends Stack {

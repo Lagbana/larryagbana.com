@@ -12,7 +12,8 @@
       "runtimeArgs": ["-r", "ts-node/register"], // for a simple typescript configuration
       "args": ["${relativeFile}"], // when the file is open, this directive runs it
       "env": {
-        "AWS_REGION": "us-east-1"
+        "AWS_REGION": "us-east-1",
+        "TABLE_NAME": "SpacesTable-0e03cf9d7dff"
       }
     }
   ]

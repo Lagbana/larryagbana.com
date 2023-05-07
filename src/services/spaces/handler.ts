@@ -6,6 +6,7 @@ import {
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { createSpaces } from "./createSpaces";
 
+// TODO: move this to a shared location
 const dynamoDBClient = new DynamoDBClient({});
 
 async function handler(
