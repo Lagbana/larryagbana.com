@@ -5,6 +5,7 @@ import {
 } from "aws-lambda";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { createSpaces } from "./createSpaces";
+import { getSpaces } from "./getSpaces";
 
 // TODO: move this to a shared location
 const dynamoDBClient = new DynamoDBClient({});
@@ -18,7 +19,7 @@ async function handler(
   try {
     switch (event.httpMethod) {
       case "GET":
-        message = "Hello from GET";
+        return getSpaces(event, dynamoDBClient);
         break;
       case "POST":
         return createSpaces(event, dynamoDBClient);
