@@ -1,16 +1,5 @@
-import {
-  APIGatewayProxyEvent,
-  APIGatewayProxyResult,
-  Context,
-} from "aws-lambda";
-import {
-  DynamoDBClient,
-  PutItemCommand,
-  GetItemCommand,
-  UpdateItemCommand,
-} from "@aws-sdk/client-dynamodb";
-import { v4 as uuidv4 } from "uuid";
-import { marshall } from "@aws-sdk/util-dynamodb";
+import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
+import { DynamoDBClient, UpdateItemCommand } from "@aws-sdk/client-dynamodb";
 
 export async function updateSpaces(
   event: APIGatewayProxyEvent,
@@ -47,7 +36,7 @@ export async function updateSpaces(
     );
 
     return {
-      statusCode: 204,
+      statusCode: 200,
       body: JSON.stringify(updateResult.Attributes),
     };
   }

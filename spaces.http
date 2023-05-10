@@ -18,7 +18,7 @@ PUT https://wl5j7206u2.execute-api.us-east-1.amazonaws.com/prod/spaces?id=053a2f
 content-type: application/json
 
 {
-    "location": "Ottawa South"
+    "location": "Ottawa West"
 }
 ###
 

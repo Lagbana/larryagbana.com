@@ -8,7 +8,7 @@ import { createSpaces } from "./createSpaces";
 import { getSpaces } from "./getSpaces";
 import { updateSpaces } from "./updateSpaces";
 import { deleteSpaces } from "./deleteSpaces";
-import { MissingFieldError } from "../../utils";
+import { InvalidJsonError, MissingFieldError } from "../../utils";
 
 // TODO: move this to a shared location
 const dynamoDBClient = new DynamoDBClient({});
@@ -23,7 +23,6 @@ async function handler(
     switch (event.httpMethod) {
       case "GET":
         const getResponse = await getSpaces(event, dynamoDBClient);
-        console.log(getResponse);
         return getResponse;
       case "POST":
         const createResponse = await createSpaces(event, dynamoDBClient);
@@ -33,13 +32,19 @@ async function handler(
         return updateResponse;
       case "DELETE":
         const deleteResponse = await deleteSpaces(event, dynamoDBClient);
-        console.log(deleteResponse);
         return deleteResponse;
       default:
         break;
     }
   } catch (err) {
     if (err instanceof MissingFieldError) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify(err.message),
+      };
+    }
+
+    if (err instanceof InvalidJsonError) {
       return {
         statusCode: 400,
         body: JSON.stringify(err.message),

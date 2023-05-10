@@ -4,7 +4,7 @@ import type { StackProps } from "aws-cdk-lib";
 import { LambdaIntegration } from "aws-cdk-lib/aws-apigateway";
 import { ITable } from "aws-cdk-lib/aws-dynamodb";
 import { Effect, PolicyStatement } from "aws-cdk-lib/aws-iam";
-import { Runtime, Code } from "aws-cdk-lib/aws-lambda";
+import { Runtime } from "aws-cdk-lib/aws-lambda";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { Construct } from "constructs";
 import { DynamodbOperations } from "./utils";
