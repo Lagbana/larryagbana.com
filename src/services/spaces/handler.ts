@@ -19,10 +19,12 @@ async function handler(
   try {
     switch (event.httpMethod) {
       case "GET":
-        return getSpaces(event, dynamoDBClient);
-        break;
+        const getResponse = await getSpaces(event, dynamoDBClient);
+        console.log(getResponse);
+        return getResponse;
       case "POST":
-        return createSpaces(event, dynamoDBClient);
+        const createResponse = await createSpaces(event, dynamoDBClient);
+        return createResponse;
       case "DELETE":
         message = "Hello from DELETE";
         break;
