@@ -6,6 +6,7 @@ import {
 import { DynamoDBClient, PutItemCommand } from "@aws-sdk/client-dynamodb";
 import { v4 as uuidv4 } from "uuid";
 import { marshall } from "@aws-sdk/util-dynamodb";
+import { validateAsSpace } from "../../utils";
 
 export async function createSpaces(
   event: APIGatewayProxyEvent,
@@ -15,14 +16,14 @@ export async function createSpaces(
   const item = JSON.parse(event.body || "{}"); // may or not be valid JSON
   item.id = randomId;
 
-  const result = await ddbClient.send(
+  validateAsSpace(item);
+
+  await ddbClient.send(
     new PutItemCommand({
       TableName: process.env.TABLE_NAME,
       Item: marshall(item),
     })
   );
-
-  console.log(`result: `, result);
 
   return {
     statusCode: 201,

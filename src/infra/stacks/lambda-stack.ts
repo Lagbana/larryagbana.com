@@ -1,3 +1,4 @@
+import { join } from "path";
 import { Stack } from "aws-cdk-lib";
 import type { StackProps } from "aws-cdk-lib";
 import { LambdaIntegration } from "aws-cdk-lib/aws-apigateway";
@@ -6,7 +7,7 @@ import { Effect, PolicyStatement } from "aws-cdk-lib/aws-iam";
 import { Runtime, Code } from "aws-cdk-lib/aws-lambda";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { Construct } from "constructs";
-import { join } from "path";
+import { DynamodbOperations } from "./utils";
 
 interface LambdaStackProps extends StackProps {
   spacesTable: ITable;
@@ -31,7 +32,13 @@ export class LambdaStack extends Stack {
       new PolicyStatement({
         effect: Effect.ALLOW,
         resources: [props.spacesTable.tableArn],
-        actions: ["dynamodb:PutItem"],
+        actions: [
+          DynamodbOperations.POST,
+          DynamodbOperations.PUT,
+          DynamodbOperations.GET,
+          DynamodbOperations.DELETE,
+          DynamodbOperations.SCAN,
+        ],
       })
     );
 

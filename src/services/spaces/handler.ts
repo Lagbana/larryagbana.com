@@ -8,6 +8,7 @@ import { createSpaces } from "./createSpaces";
 import { getSpaces } from "./getSpaces";
 import { updateSpaces } from "./updateSpaces";
 import { deleteSpaces } from "./deleteSpaces";
+import { MissingFieldError } from "../../utils";
 
 // TODO: move this to a shared location
 const dynamoDBClient = new DynamoDBClient({});
@@ -38,7 +39,12 @@ async function handler(
         break;
     }
   } catch (err) {
-    console.error(err);
+    if (err instanceof MissingFieldError) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify(err.message),
+      };
+    }
 
     return {
       statusCode: 500,

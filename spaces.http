@@ -6,17 +6,21 @@ POST https://wl5j7206u2.execute-api.us-east-1.amazonaws.com/prod/spaces
 content-type: application/json
 
 {
-    "location": "Ottawa"
+    "location": "Ottawa East",
+    "name": "Franny"
 }
 ###
 
-PUT https://wl5j7206u2.execute-api.us-east-1.amazonaws.com/prod/spaces?id=ef3227dd-ec11-4a40-bc89-5f340cbed064
+GET https://wl5j7206u2.execute-api.us-east-1.amazonaws.com/prod/spaces?id=053a2f95-c2bd-4de1-aba8-924bf8bc49e5
+###
+
+PUT https://wl5j7206u2.execute-api.us-east-1.amazonaws.com/prod/spaces?id=053a2f95-c2bd-4de1-aba8-924bf8bc49e5
 content-type: application/json
 
 {
-    "location": "Nepean"
+    "location": "Ottawa South"
 }
 ###
 
-DELETE https://wl5j7206u2.execute-api.us-east-1.amazonaws.com/prod/spaces?id=ef3227dd-ec11-4a40-bc89-5f340cbed064
+DELETE https://wl5j7206u2.execute-api.us-east-1.amazonaws.com/prod/spaces?id=053a2f95-c2bd-4de1-aba8-924bf8bc49e5
 ###
