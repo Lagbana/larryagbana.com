@@ -2,13 +2,13 @@ import { handler } from "../src/services/spaces/handler";
 
 handler(
   {
-    httpMethod: "GET",
+    httpMethod: "PUT",
     queryStringParameters: {
       id: "ef3227dd-ec11-4a40-bc89-5f340cbed064",
     },
-    // body: JSON.stringify({
-    //   location: "London",
-    // }),
+    body: JSON.stringify({
+      location: "Kanata updated",
+    }),
   } as any,
   {} as any
 );
