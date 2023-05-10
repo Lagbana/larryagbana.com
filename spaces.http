@@ -17,3 +17,6 @@ content-type: application/json
     "location": "Nepean"
 }
 ###
+
+DELETE https://wl5j7206u2.execute-api.us-east-1.amazonaws.com/prod/spaces?id=ef3227dd-ec11-4a40-bc89-5f340cbed064
+###

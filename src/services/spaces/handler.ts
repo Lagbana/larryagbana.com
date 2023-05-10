@@ -7,6 +7,7 @@ import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { createSpaces } from "./createSpaces";
 import { getSpaces } from "./getSpaces";
 import { updateSpaces } from "./updateSpaces";
+import { deleteSpaces } from "./deleteSpaces";
 
 // TODO: move this to a shared location
 const dynamoDBClient = new DynamoDBClient({});
@@ -30,8 +31,9 @@ async function handler(
         const updateResponse = await updateSpaces(event, dynamoDBClient);
         return updateResponse;
       case "DELETE":
-        message = "Hello from DELETE";
-        break;
+        const deleteResponse = await deleteSpaces(event, dynamoDBClient);
+        console.log(deleteResponse);
+        return deleteResponse;
       default:
         break;
     }
