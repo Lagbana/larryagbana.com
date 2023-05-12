@@ -1,8 +1,8 @@
-
+@url = https://wl5j7206u2.execute-api.us-east-1.amazonaws.com/prod
 GET https://wl5j7206u2.execute-api.us-east-1.amazonaws.com/prod/spaces
 ###
 
-POST https://wl5j7206u2.execute-api.us-east-1.amazonaws.com/prod/spaces
+POST {{url}}/spaces
 content-type: application/json
 
 {
@@ -11,16 +11,15 @@ content-type: application/json
 }
 ###
 
-GET https://wl5j7206u2.execute-api.us-east-1.amazonaws.com/prod/spaces?id=053a2f95-c2bd-4de1-aba8-924bf8bc49e5
+GET {{url}}/spaces?id=053a2f95-c2bd-4de1-aba8-924bf8bc49e5
 ###
 
-PUT https://wl5j7206u2.execute-api.us-east-1.amazonaws.com/prod/spaces?id=053a2f95-c2bd-4de1-aba8-924bf8bc49e5
+PUT {{url}}/spaces?id=053a2f95-c2bd-4de1-aba8-924bf8bc49e5
 content-type: application/json
-
 {
     "location": "Ottawa West"
 }
 ###
 
-DELETE https://wl5j7206u2.execute-api.us-east-1.amazonaws.com/prod/spaces?id=053a2f95-c2bd-4de1-aba8-924bf8bc49e5
+DELETE {{url}}/spaces?id=053a2f95-c2bd-4de1-aba8-924bf8bc49e5
 ###
