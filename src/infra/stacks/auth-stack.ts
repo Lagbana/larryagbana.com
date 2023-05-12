@@ -38,7 +38,7 @@ export class AuthStack extends Stack {
       },
     });
 
-    CfnOutput(this, "SpaceUserPoolClientId", {
+    new CfnOutput(this, "SpaceUserPoolClientId", {
       value: this.#userPoolClient.userPoolClientId,
     });
   }
