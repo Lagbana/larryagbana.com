@@ -4,6 +4,8 @@ import {
   LambdaIntegration,
   CognitoUserPoolsAuthorizer,
   AuthorizationType,
+  ResourceOptions,
+  Cors,
 } from "aws-cdk-lib/aws-apigateway";
 import { Construct } from "constructs";
 
@@ -40,7 +42,14 @@ export class ApiStack extends Stack {
       },
     };
 
-    const spacesResource = api.root.addResource("spaces");
+    const optionsWithCors: ResourceOptions = {
+      defaultCorsPreflightOptions: {
+        allowOrigins: Cors.ALL_ORIGINS, // TODO this is the default - we should restrict this to specific origins
+        allowMethods: Cors.ALL_METHODS, // TODO this is the default - we should restrict this to specific origins
+      },
+    };
+
+    const spacesResource = api.root.addResource("spaces", optionsWithCors);
     spacesResource.addMethod(
       "GET",
       props.spacesLambdaIntegration,

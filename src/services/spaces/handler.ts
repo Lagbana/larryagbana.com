@@ -8,7 +8,11 @@ import { createSpaces } from "./createSpaces";
 import { getSpaces } from "./getSpaces";
 import { updateSpaces } from "./updateSpaces";
 import { deleteSpaces } from "./deleteSpaces";
-import { InvalidJsonError, MissingFieldError } from "../../utils";
+import {
+  InvalidJsonError,
+  MissingFieldError,
+  addCorsHeader,
+} from "../../utils";
 
 // TODO: move this to a shared location
 const dynamoDBClient = new DynamoDBClient({});
@@ -17,22 +21,22 @@ async function handler(
   event: APIGatewayProxyEvent,
   context: Context
 ): Promise<APIGatewayProxyResult> {
-  let message: string;
+  let result: APIGatewayProxyResult;
 
   try {
     switch (event.httpMethod) {
       case "GET":
-        const getResponse = await getSpaces(event, dynamoDBClient);
-        return getResponse;
+        result = await getSpaces(event, dynamoDBClient);
+        break;
       case "POST":
-        const createResponse = await createSpaces(event, dynamoDBClient);
-        return createResponse;
+        result = await createSpaces(event, dynamoDBClient);
+        break;
       case "PUT":
-        const updateResponse = await updateSpaces(event, dynamoDBClient);
-        return updateResponse;
+        result = await updateSpaces(event, dynamoDBClient);
+        break;
       case "DELETE":
-        const deleteResponse = await deleteSpaces(event, dynamoDBClient);
-        return deleteResponse;
+        result = await deleteSpaces(event, dynamoDBClient);
+        break;
       default:
         break;
     }
@@ -57,12 +61,14 @@ async function handler(
     };
   }
 
-  const response: APIGatewayProxyResult = {
-    statusCode: 200,
-    body: JSON.stringify(message),
-  };
+  // const response: APIGatewayProxyResult = {
+  //   statusCode: 200,
+  //   body: JSON.stringify(message),
+  // };
 
-  return response;
+  addCorsHeader(result);
+
+  return result;
 }
 
 export { handler };
