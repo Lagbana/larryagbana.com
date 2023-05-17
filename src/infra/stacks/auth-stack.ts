@@ -8,7 +8,12 @@ import {
   CfnIdentityPool,
   CfnIdentityPoolRoleAttachment,
 } from "aws-cdk-lib/aws-cognito";
-import { FederatedPrincipal, Role } from "aws-cdk-lib/aws-iam";
+import {
+  Effect,
+  FederatedPrincipal,
+  PolicyStatement,
+  Role,
+} from "aws-cdk-lib/aws-iam";
 
 export class AuthStack extends Stack {
   public userPool: UserPool;
@@ -22,10 +27,10 @@ export class AuthStack extends Stack {
     super(scope, id, props);
     this.#createUserPool();
     this.#createUserPoolClient();
-    this.#createAdminGroup();
     this.#createIdentityPool();
     this.#createRoles();
     this.#attachRoles();
+    this.#createAdminGroup(); // should be done after the roles are created
   }
 
   #createUserPool() {
@@ -62,6 +67,7 @@ export class AuthStack extends Stack {
     new CfnUserPoolGroup(this, "SpaceAdmins", {
       userPoolId: this.userPool.userPoolId,
       groupName: "admins",
+      roleArn: this.#adminRole.roleArn, // establish the role that will be assumed by the users in this group
     });
   }
   #createIdentityPool() {
@@ -129,6 +135,16 @@ export class AuthStack extends Stack {
         "sts:AssumeRoleWithWebIdentity"
       ),
     });
+
+    // * Test that the admin role is working
+    // * by adding a policy statement to the admin role to allow listing of buckets
+    this.#adminRole.addToPolicy(
+      new PolicyStatement({
+        effect: Effect.ALLOW,
+        actions: ["s3:ListAllMyBuckets"],
+        resources: ["*"],
+      })
+    );
   }
   #attachRoles() {
     new CfnIdentityPoolRoleAttachment(this, "RolesAttachment", {
