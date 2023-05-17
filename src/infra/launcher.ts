@@ -3,6 +3,7 @@ import { DataStack } from "./stacks/data-stack";
 import { LambdaStack } from "./stacks/lambda-stack";
 import { ApiStack } from "./stacks/api-stack";
 import { AuthStack } from "./stacks/auth-stack";
+import { UiDeploymentStack } from "./stacks/ui-deployment-stack";
 
 const app = new App();
 const authStack = new AuthStack(app, "AuthStack");
@@ -14,3 +15,4 @@ new ApiStack(app, "ApiStack", {
   spacesLambdaIntegration: lambdaStack.spacesLambdaIntegration,
   userPool: authStack.userPool,
 });
+new UiDeploymentStack(app, "UiDeploymentStack");
