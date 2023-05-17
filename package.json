@@ -5,6 +5,9 @@
   "main": "index.js",
   "author": "Larry Agbana",
   "license": "MIT",
+  "scripts": {
+    "deploy": "cdk deploy --all --outputs-file outputs.json"
+  },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.114",
     "@types/node": "^18.16.3",
