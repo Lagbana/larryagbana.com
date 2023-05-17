@@ -19,7 +19,7 @@ export class LambdaStack extends Stack {
   constructor(scope: Construct, id: string, props: LambdaStackProps) {
     super(scope, id, props);
 
-    const spacesLambda = new NodejsFunction(this, "SpacesLambda", {
+    const spacesLambda = new NodejsFunction(this, "SpacesLambda2", {
       runtime: Runtime.NODEJS_18_X,
       handler: "handler",
       entry: join(__dirname, "..", "..", "services", "spaces", "handler.ts"),
