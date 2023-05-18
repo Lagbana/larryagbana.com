@@ -14,13 +14,13 @@ import type { StackProps } from "aws-cdk-lib";
 import type { MethodOptions } from "aws-cdk-lib/aws-apigateway";
 import type { IUserPool } from "aws-cdk-lib/aws-cognito";
 
-interface APiStackProps extends StackProps {
+interface ApiStackProps extends StackProps {
   spacesLambdaIntegration: LambdaIntegration;
   userPool: IUserPool;
 }
 
 export class ApiStack extends Stack {
-  constructor(scope: Construct, id: string, props: APiStackProps) {
+  constructor(scope: Construct, id: string, props: ApiStackProps) {
     super(scope, id, props);
 
     const api = new RestApi(this, "SpaceFinderApi");

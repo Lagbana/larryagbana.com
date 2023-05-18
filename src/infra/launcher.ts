@@ -1,9 +1,11 @@
-import { App } from "aws-cdk-lib";
+import { App, Aspects } from "aws-cdk-lib";
+import { AwsSolutionsChecks } from "cdk-nag";
 import { DataStack } from "./stacks/data-stack";
 import { LambdaStack } from "./stacks/lambda-stack";
 import { ApiStack } from "./stacks/api-stack";
 import { AuthStack } from "./stacks/auth-stack";
 import { UiDeploymentStack } from "./stacks/ui-deployment-stack";
+import { BucketTagger } from "./tagger";
 
 const app = new App();
 const authStack = new AuthStack(app, "AuthStack");
@@ -16,3 +18,9 @@ new ApiStack(app, "ApiStack", {
   userPool: authStack.userPool,
 });
 new UiDeploymentStack(app, "UiDeploymentStack");
+
+const bucketTag = new BucketTagger("version", "0.0.1");
+Aspects.of(app).add(bucketTag);
+
+// TODO: Perform CDK NAG checks to ensure the app is following AWS best practices
+// Aspects.of(app).add(new AwsSolutionsChecks({ verbose: true }));
