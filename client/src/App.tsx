@@ -3,12 +3,18 @@ import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import "./App.css";
 import { NavBar } from "./components/NavBar/nav-bar";
 import { Login } from "./components/Login/login";
+import { CreateSpace } from "./components/Spaces/CreateSpace";
 import { AuthService } from "./services/AuthService";
+import { DataService } from "./services/DataService";
 import { AuthServiceContext } from "./hooks/useAuthService";
+import { DataServiceContext } from "./hooks/useDataService";
 
+// TODO: (!) Some chunks are larger than 500 kBs after minification. Consider:
+// - Using dynamic import() to code-split the application
 function App() {
   const [username, setUsername] = useState("");
   const authService = new AuthService();
+  const dataService = new DataService();
   const router = createBrowserRouter([
     {
       element: (
@@ -36,7 +42,7 @@ function App() {
         },
         {
           path: "/create-spaces",
-          element: <div>Create spaces page</div>,
+          element: <CreateSpace />,
         },
       ],
     },
@@ -44,9 +50,11 @@ function App() {
 
   return (
     <AuthServiceContext.Provider value={authService}>
-      <div className='App'>
-        <RouterProvider router={router} />
-      </div>
+      <DataServiceContext.Provider value={dataService}>
+        <div className='App'>
+          <RouterProvider router={router} />
+        </div>
+      </DataServiceContext.Provider>
     </AuthServiceContext.Provider>
   );
 }
