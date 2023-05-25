@@ -1,5 +1,5 @@
 import { App, Aspects } from "aws-cdk-lib";
-import { AwsSolutionsChecks } from "cdk-nag";
+// import { AwsSolutionsChecks } from "cdk-nag"; // TODO: Perform CDK NAG checks to ensure the app is following AWS best practices
 import { DataStack } from "./stacks/data-stack";
 import { LambdaStack } from "./stacks/lambda-stack";
 import { ApiStack } from "./stacks/api-stack";
@@ -8,8 +8,10 @@ import { UiDeploymentStack } from "./stacks/ui-deployment-stack";
 import { BucketTagger } from "./tagger";
 
 const app = new App();
-const authStack = new AuthStack(app, "AuthStack");
 const dataStack = new DataStack(app, "DataStack");
+const authStack = new AuthStack(app, "AuthStack", {
+  photosBucket: dataStack.photosBucket,
+});
 const lambdaStack = new LambdaStack(app, "LambdaStack", {
   spacesTable: dataStack.spacesTable,
 });
