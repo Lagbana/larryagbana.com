@@ -4,7 +4,6 @@ import { Construct } from "constructs";
 import { getSuffixFromStack } from "../utils";
 import {
   Bucket,
-  BucketAccessControl,
   HttpMethods,
   ObjectOwnership,
 } from "aws-cdk-lib/aws-s3";
@@ -41,7 +40,7 @@ export class DataStack extends Stack {
         },
       ],
       // * @read: https://docs.aws.amazon.com/AmazonS3/latest/userguide/acl-overview.html
-      // accessControl: BucketAccessControl.PUBLIC_READ, // * Ideal
+      // accessControl: BucketAccessControl.PUBLIC_READ, // * Ideal but currently not working
       objectOwnership: ObjectOwnership.OBJECT_WRITER, // * work around
       blockPublicAccess: {
         // * work around

@@ -61,13 +61,7 @@ async function handler(
     };
   }
 
-  // const response: APIGatewayProxyResult = {
-  //   statusCode: 200,
-  //   body: JSON.stringify(message),
-  // };
-
   addCorsHeader(result);
-
   return result;
 }
 
