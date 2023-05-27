@@ -40,6 +40,13 @@ export class AuthService {
     return this.#user?.getUsername();
   }
 
+  isAuthorized() {
+    if (this.#user) {
+      return true;
+    }
+    return false;
+  }
+
   // * Lazy load temoprary credentials
   async getTemporaryCredentials() {
     if (this.#temporaryCredentials) {

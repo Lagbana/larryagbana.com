@@ -4,6 +4,7 @@ import "./App.css";
 import { NavBar } from "./components/NavBar/nav-bar";
 import { Login } from "./components/Login/login";
 import { CreateSpace } from "./components/Spaces/CreateSpace";
+import { Space } from "./components/Spaces/Space";
 import { AuthService } from "./services/AuthService";
 import { DataService } from "./services/DataService";
 import { AuthServiceContext } from "./hooks/useAuthService";
@@ -39,7 +40,7 @@ function App() {
         },
         {
           path: "/spaces",
-          element: <div>Spaces page</div>,
+          element: <Space />,
         },
         {
           path: "/create-spaces",

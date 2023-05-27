@@ -5,12 +5,7 @@ import {
 } from "@aws-sdk/client-s3";
 import { AuthService } from "./AuthService";
 import { DataStack, ApiStack } from "../../../outputs.json";
-
-interface Space {
-  name: string;
-  location: string;
-  photoUrl?: string;
-}
+import { type SpaceEntry } from "../types";
 
 // TODO: Fix the exported endpoint to not be dynamic
 const spacesUrl = ApiStack.SpaceFinderApiEndpoint2EFB5B06 + "spaces";
@@ -23,15 +18,31 @@ export class DataService {
   constructor(authservice: AuthService) {
     this.#authService = authservice;
   }
-  async createSpace(name: string, location: string, photo?: File) {
-    const space = {} as Space;
+
+  public async getSpaces() {
+    const spacesResult = await fetch(spacesUrl, {
+      method: "GET",
+      headers: {
+        Authorization: this.#authService.getCurrentToken()!,
+      },
+    });
+    const responseJSON: Array<SpaceEntry> = await spacesResult.json();
+    return responseJSON;
+  }
+
+  public async reserveSpace(spaceId: string) {
+    return "yaba daba don't";
+  }
+
+  public async createSpace(name: string, location: string, photo?: File) {
+    const space = {} as SpaceEntry;
     space.name = name;
     space.location = location;
 
     try {
-      // const controller = new AbortController();
-      // const signal = controller.signal;
-      // setTimeout(() => controller.abort("Took longer than expected!"), 5000);
+      const controller = new AbortController();
+      const signal = controller.signal;
+      setTimeout(() => controller.abort("Took longer than expected!"), 3000);
 
       if (photo) {
         const uploadUrl = await this.#uploadPublicFile(photo);
@@ -41,7 +52,7 @@ export class DataService {
       const postResult = await fetch(spacesUrl, {
         method: "POST",
         body: JSON.stringify(space),
-        // signal,
+        signal,
         headers: {
           Authorization: this.#authService.getCurrentToken()!,
         },
@@ -51,7 +62,7 @@ export class DataService {
     } catch (err) {
       const error = err as Error;
       if (error.name === "AbortError") {
-        console.log("❌ Fetch aborted");
+        console.error("Fetch aborted. Upload took too long!");
       }
     }
   }
@@ -59,7 +70,7 @@ export class DataService {
   async #uploadPublicFile(file: File) {
     const credentials = await this.#authService.getTemporaryCredentials();
 
-    // Use temporary
+    // Use temporary credentials to access s3
     if (!this.#s3Client) {
       this.#s3Client = new S3Client({
         credentials: credentials as any,
@@ -67,11 +78,8 @@ export class DataService {
       });
     }
 
-    // const name = "toronto-on-ca-E6043852-3";
-
     const command = new PutObjectCommand({
       Bucket: DataStack.SpacePhotosBucketName,
-      // Key: name,
       Key: file.name,
       ACL: ObjectCannedACL.public_read,
       Body: file,
@@ -83,7 +91,7 @@ export class DataService {
     }.amazonaws.com/${command.input.Key}`;
   }
 
-  isAuthorized() {
-    return true;
+  public isAuthorized() {
+    return this.#authService.isAuthorized();
   }
 }
