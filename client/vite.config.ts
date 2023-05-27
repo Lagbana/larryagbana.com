@@ -11,7 +11,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      "./runtimeConfig": "./runtimeConfig.browser",
+      "./runtimeConfig": "./runtimeConfig.browser", //fix production build
     },
   },
 });

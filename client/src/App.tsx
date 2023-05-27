@@ -9,12 +9,13 @@ import { DataService } from "./services/DataService";
 import { AuthServiceContext } from "./hooks/useAuthService";
 import { DataServiceContext } from "./hooks/useDataService";
 
+const authService = new AuthService();
+const dataService = new DataService(authService);
+
 // TODO: (!) Some chunks are larger than 500 kBs after minification. Consider:
 // - Using dynamic import() to code-split the application
 function App() {
   const [username, setUsername] = useState("");
-  const authService = new AuthService();
-  const dataService = new DataService();
   const router = createBrowserRouter([
     {
       element: (
