@@ -1,27 +1,22 @@
-import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
-import { DynamoDBClient, PutItemCommand } from "@aws-sdk/client-dynamodb";
-import { marshall } from "@aws-sdk/util-dynamodb";
-import { createRandomId, validateAsSpace, parseJSON } from "../../utils";
+import { APIGatewayProxyResult } from "aws-lambda";
+import { SpacesRepository } from "../../repository/spaces/spaces.interface";
+import { Space } from "../../entities";
+import { createRandomId, validateAsSpace } from "../../utils";
 
 export async function createSpaces(
-  event: APIGatewayProxyEvent,
-  ddbClient: DynamoDBClient
+  data: Space,
+  spaceRepository: SpacesRepository
 ): Promise<APIGatewayProxyResult> {
+  const newSpace = data;
+
   const randomId = createRandomId();
-  const item = parseJSON(event.body);
-  item.id = randomId;
+  newSpace.id = randomId;
+  validateAsSpace(newSpace);
 
-  validateAsSpace(item);
-
-  await ddbClient.send(
-    new PutItemCommand({
-      TableName: process.env.TABLE_NAME,
-      Item: marshall(item),
-    })
-  );
+  const createdSpaceId = await spaceRepository.create(newSpace);
 
   return {
     statusCode: 201,
-    body: JSON.stringify({ id: item.id }),
+    body: JSON.stringify({ id: createdSpaceId }),
   };
 }
