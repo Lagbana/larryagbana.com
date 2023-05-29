@@ -1,10 +1,10 @@
 import { join } from "path";
-import { Stack } from "aws-cdk-lib";
+import { Duration, Stack } from "aws-cdk-lib";
 import type { StackProps } from "aws-cdk-lib";
 import { LambdaIntegration } from "aws-cdk-lib/aws-apigateway";
 import { ITable } from "aws-cdk-lib/aws-dynamodb";
 import { Effect, PolicyStatement } from "aws-cdk-lib/aws-iam";
-import { Runtime } from "aws-cdk-lib/aws-lambda";
+import { Runtime, Tracing } from "aws-cdk-lib/aws-lambda";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { Construct } from "constructs";
 import { DynamodbOperations } from "./utils";
@@ -22,10 +22,12 @@ export class LambdaStack extends Stack {
     const spacesLambda = new NodejsFunction(this, "SpacesLambda2", {
       runtime: Runtime.NODEJS_18_X,
       handler: "handler",
-      entry: join(__dirname, "..", "..", "services", "spaces", "handler.ts"),
+      entry: join(__dirname, "..", "..", "controllers", "spaces", "handler.ts"),
       environment: {
         TABLE_NAME: props.spacesTable.tableName,
       },
+      tracing: Tracing.ACTIVE,
+      timeout: Duration.minutes(1),
     });
 
     spacesLambda.addToRolePolicy(

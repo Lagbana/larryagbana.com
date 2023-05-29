@@ -5,6 +5,7 @@ import { LambdaStack } from "./stacks/lambda-stack";
 import { ApiStack } from "./stacks/api-stack";
 import { AuthStack } from "./stacks/auth-stack";
 import { UiDeploymentStack } from "./stacks/ui-deployment-stack";
+import { MonitoringStack } from "./stacks/monitoring-stack";
 import { BucketTagger } from "./tagger";
 
 const app = new App();
@@ -20,6 +21,7 @@ new ApiStack(app, "ApiStack", {
   userPool: authStack.userPool,
 });
 new UiDeploymentStack(app, "UiDeploymentStack");
+new MonitoringStack(app, "MonitoringStack");
 
 const bucketTag = new BucketTagger("version", "0.0.1");
 Aspects.of(app).add(bucketTag);

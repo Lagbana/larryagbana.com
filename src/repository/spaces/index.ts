@@ -7,15 +7,16 @@ import {
   UpdateItemCommand,
 } from "@aws-sdk/client-dynamodb";
 import { unmarshall, marshall } from "@aws-sdk/util-dynamodb";
+import { captureAWSv3Client, getSegment } from "aws-xray-sdk-core";
 import { Space } from "../../entities";
 import { SpacesRepository } from "./spaces.interface";
-import { createRandomId, parseJSON, validateAsSpace } from "../../utils";
 
 export class DynamoDBSpacesRepository implements SpacesRepository {
   private client: DynamoDBClient;
 
   constructor() {
-    this.client = new DynamoDBClient({});
+    // Enable tracing on dynamodb using X-Ray
+    this.client = captureAWSv3Client(new DynamoDBClient({}));
   }
 
   async get(spaceId: string): Promise<Space | null> {
@@ -37,15 +38,20 @@ export class DynamoDBSpacesRepository implements SpacesRepository {
   }
 
   async getAll(): Promise<Array<Space>> {
+    const getAllSpacesTrace =
+      getSegment().addNewSubsegment("getAllSpacesTrace");
     const result = await this.client.send(
       new ScanCommand({
         TableName: process.env.TABLE_NAME,
       })
     );
+    getAllSpacesTrace.close();
 
+    const unmarshalling = getSegment().addNewSubsegment("unmarshalling");
     const umarshalledItems = result.Items?.map(
       (item) => unmarshall(item) as Space
     );
+    unmarshalling.close();
 
     // convert result to array of Space and return
     return umarshalledItems;

@@ -27,6 +27,7 @@
     "@aws-sdk/lib-dynamodb": "^3.329.0",
     "@aws-sdk/util-dynamodb": "^3.329.0",
     "aws-amplify": "^5.2.2",
+    "aws-xray-sdk-core": "^3.5.0",
     "cdk-nag": "^2.27.12"
   }
 }

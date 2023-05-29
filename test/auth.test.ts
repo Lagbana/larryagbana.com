@@ -4,7 +4,10 @@ import { AuthService } from "./AuthService";
 async function testAuth() {
   const authService = new AuthService();
   const loginResult = await authService.login("tester1", "Teeth@2023");
-  //   console.log(loginResult.getSignInUserSession().getIdToken().getJwtToken());
+  console.log(loginResult.getSignInUserSession().getIdToken().getJwtToken());
+  console.log(`
+  ============
+  `);
   const credentialsResponse = await authService.generateTemporaryCredentials(
     loginResult
   );
@@ -16,7 +19,7 @@ async function testAuth() {
     sessionToken: credentialsResponse.Credentials?.SessionToken,
   };
 
-  console.log(credentials);
+  // console.log(credentials);
   const buckets = await listBuckets(credentials);
   console.log(`🪣 `, buckets);
 }
