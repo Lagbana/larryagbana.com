@@ -21,7 +21,7 @@ export class LambdaStack extends Stack {
     const shortnerLambda = new NodejsFunction(this, "ShortnerLambda", {
       runtime: Runtime.NODEJS_18_X,
       handler: "handler",
-      entry: join(__dirname, "..", "controller", "handler.ts"),
+      entry: join(__dirname, "..", "..", "controller", "handler.ts"),
       environment: {
         TABLE_NAME: props.shortnerTable.tableName,
       },

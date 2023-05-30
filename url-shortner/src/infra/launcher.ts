@@ -1,4 +1,4 @@
-import { App, Aspects } from "aws-cdk-lib";
+import { App } from "aws-cdk-lib";
 import { ApiStack } from "./stacks/apiStack";
 import { LambdaStack } from "./stacks/lambdaStack";
 import { DataStack } from "./stacks/dataStack";
