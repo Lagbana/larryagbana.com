@@ -5,10 +5,10 @@ import { DataStack } from "./stacks/dataStack";
 
 const app = new App();
 
-const dataStack = new DataStack(app, "DataStack");
-const lambdaStack = new LambdaStack(app, "LambdaStack", {
+const dataStack = new DataStack(app, "ShortnerDataStack");
+const lambdaStack = new LambdaStack(app, "ShortnerLambdaStack", {
   shortnerTable: dataStack.shortnerTable,
 });
-new ApiStack(app, "ApiStack", {
+new ApiStack(app, "ShortnerApiStack", {
   lambdaIntegration: lambdaStack.lambdaIntegration,
 });
