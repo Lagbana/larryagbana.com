@@ -1,0 +1,23 @@
+{
+  "name": "url-shortner",
+  "version": "1.0.0",
+  "description": "Url shortner built on Nodejs, API Gateway, Lambda, DynamoDB",
+  "main": "index.js",
+  "author": "Larry Agbana",
+  "license": "MIT",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.321.1",
+    "@aws-sdk/lib-dynamodb": "^3.329.0",
+    "@aws-sdk/util-dynamodb": "^3.329.0"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.114",
+    "@types/node": "^18.16.3",
+    "aws-cdk": "^2.77.0",
+    "aws-cdk-lib": "^2.77.0",
+    "constructs": "^10.2.12",
+    "esbuild": "^0.17.18",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
+  }
+}
