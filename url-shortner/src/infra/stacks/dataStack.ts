@@ -1,4 +1,4 @@
-import { Stack } from "aws-cdk-lib";
+import { CfnOutput, Stack } from "aws-cdk-lib";
 import { Table as DynamoTable, AttributeType } from "aws-cdk-lib/aws-dynamodb";
 import { Construct } from "constructs";
 import { getSuffixFromStack } from "../util";
@@ -12,6 +12,7 @@ export class DataStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
+    const prefix = process.env.SHORTNER_TABLE_PREFIX;
     const suffix = getSuffixFromStack(this);
 
     this.shortnerTable = new DynamoTable(this, "ShortnerTable", {
@@ -19,7 +20,11 @@ export class DataStack extends Stack {
         name: "id",
         type: AttributeType.STRING,
       },
-      tableName: `ShortnerTable-${suffix}`,
+      tableName: `${prefix}-${suffix}`,
+    });
+
+    new CfnOutput(this, "Version", {
+      value: process.env.COMMIT_HASH,
     });
   }
 }
