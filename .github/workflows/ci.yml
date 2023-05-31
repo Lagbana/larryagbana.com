@@ -32,9 +32,8 @@ jobs:
           filters: |
             url-shortner:
               - 'url-shortner/**'
-              exclude:
-                - 'url-shortner/**/*.md'
-                - 'url-shortner/.gitignore'
+              - '!url-shortner/**/*.md'
+              - '!url-shortner/.gitignore'
 
       - name: Cache Node.js modules
         uses: actions/cache@v2
