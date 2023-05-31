@@ -1,0 +1,68 @@
+name: Build, Lint, and Test
+
+on: [push, pull_request]
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node: [18.x]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Get changed files
+        id: changed-files
+        uses: jitterbit/get-changed-files@v1
+        with:
+          format: "json"
+
+      - name: Filter changed files
+        id: filter-changed-files
+        uses: dorny/paths-filter@v2
+        with:
+          filters: |
+            url-shortner:
+              - 'url-shortner/**'
+              exclude:
+                - 'url-shortner/**/*.md'
+                - 'url-shortner/.gitignore'
+
+      - name: Cache Node.js modules
+        uses: actions/cache@v2
+        with:
+          path: url-shortner/node_modules
+          key: ${{ runner.OS }}-node-${{ hashFiles('url-shortner/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-node-
+
+      - name: Test URL Shortner Server
+        if: steps.filter-changed-files.outputs.url-shortner == 'true'
+        run: |
+          cd url-shortner
+          yarn install
+          yarn test
+
+      - name: Cache Node.js modules for Client
+        uses: actions/cache@v2
+        with:
+          path: url-shortner/client/node_modules
+          key: ${{ runner.OS }}-node-${{ hashFiles('url-shortner/client/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-node-
+
+      - name: Test URL Shortner Client
+        if: steps.filter-changed-files.outputs.url-shortner == 'true'
+        run: |
+          cd url-shortner/client
+          yarn install
+          yarn build
+          yarn test

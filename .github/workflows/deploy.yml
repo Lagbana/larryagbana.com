@@ -1,0 +1,39 @@
+name: Deployment
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Get changed files
+        id: changed-files
+        uses: jitterbit/get-changed-files@v1
+        with:
+          format: "json"
+
+      - name: Filter changed files
+        id: filter-changed-files
+        uses: dorny/paths-filter@v2
+        with:
+          filters: |
+            url-shortner:
+              - 'url-shortner/**'
+              exclude:
+                - 'url-shortner/**/*.test.ts'
+                - 'url-shortner/**/*.md'
+
+      - name: Set commit hash as env var
+        run: echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
+      - name: Deploy URL Shortner
+        if: steps.filter-changed-files.outputs.url-shortner == 'true'
+        uses: ./.github/actions/aws-deploy
+        with:
+          projectName: "url-shortner"
