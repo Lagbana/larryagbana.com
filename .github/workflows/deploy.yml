@@ -25,9 +25,9 @@ jobs:
           filters: |
             url-shortner:
               - 'url-shortner/**'
+              - '!url-shortner/**/*.test.ts'
+              - '!url-shortner/**/*.md'
               exclude:
-                - 'url-shortner/**/*.test.ts'
-                - 'url-shortner/**/*.md'
 
       - name: Set commit hash as env var
         run: echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
