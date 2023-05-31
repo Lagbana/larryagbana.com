@@ -1,4 +1,4 @@
-import { Stack, StackProps } from "aws-cdk-lib";
+import { CfnOutput, Stack, StackProps } from "aws-cdk-lib";
 import { LambdaIntegration } from "aws-cdk-lib/aws-apigateway";
 import { ITable } from "aws-cdk-lib/aws-dynamodb";
 import { Runtime } from "aws-cdk-lib/aws-lambda";
@@ -40,5 +40,9 @@ export class LambdaStack extends Stack {
     );
 
     this.lambdaIntegration = new LambdaIntegration(shortnerLambda);
+
+    new CfnOutput(this, "Version", {
+      value: process.env.COMMIT_HASH,
+    });
   }
 }

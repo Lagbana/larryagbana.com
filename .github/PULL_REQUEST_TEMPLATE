@@ -1,0 +1,24 @@
+# Description
+
+Describe your changes
+
+## Type of change
+
+Please delete options that are not relevant.
+
+- [ ] Bug fix (non-breaking change which fixes an issue)
+- [ ] New feature (non-breaking change which adds functionality)
+- [ ] Refactor (new code changes but everything functions the same)
+
+# Checklist:
+
+- [ ] I have not added any packages that contain high risk licenses (GPL, LGPL, etc. Consult with DevOps if in question)
+- [ ] My code follows the style guidelines of this project
+- [ ] I have added feature flags for new features or high risk changes
+- [ ] I have performed a self-review of my own code
+- [ ] I have commented my code, particularly in hard-to-understand areas
+- [ ] I have made corresponding changes to the documentation
+- [ ] I added descriptive logs around new code
+- [ ] I have deployed and validated my code on a sandbox
+- [ ] My changes generate no new warnings
+- [ ] I have added tests that prove my fix is effective or that my feature works

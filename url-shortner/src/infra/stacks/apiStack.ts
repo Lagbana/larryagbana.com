@@ -1,9 +1,8 @@
-import { Stack } from "aws-cdk-lib";
+import { CfnOutput, Stack } from "aws-cdk-lib";
 import {
   RestApi,
   LambdaIntegration,
   ResourceOptions,
-  Cors,
 } from "aws-cdk-lib/aws-apigateway";
 import { Construct } from "constructs";
 
@@ -20,14 +19,21 @@ export class ApiStack extends Stack {
 
     const optionsWithCors: ResourceOptions = {
       defaultCorsPreflightOptions: {
-        allowOrigins: Cors.ALL_ORIGINS, // TODO this is the default - we should restrict this to specific origins
-        allowMethods: Cors.ALL_METHODS, // TODO this is the default - we should restrict this to specific origins
+        allowOrigins: ["http://localhost:5173"],
+        allowMethods: ["POST"],
       },
     };
 
     const apiResource = api.root.addResource("shortner", optionsWithCors);
 
-    apiResource.addMethod("GET", props.lambdaIntegration);
     apiResource.addMethod("POST", props.lambdaIntegration);
+
+    new CfnOutput(this, "ShortnerApiEndpoint", {
+      value: api.url,
+    });
+
+    new CfnOutput(this, "Version", {
+      value: process.env.COMMIT_HASH,
+    });
   }
 }
