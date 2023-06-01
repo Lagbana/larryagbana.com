@@ -19,12 +19,6 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
 
-      - name: Get changed files
-        id: changed-files
-        uses: jitterbit/get-changed-files@v1
-        with:
-          format: "json"
-
       - name: Filter changed files
         id: filter-changed-files
         uses: dorny/paths-filter@v2
@@ -35,33 +29,9 @@ jobs:
               - '!url-shortner/**/*.md'
               - '!url-shortner/.gitignore'
 
-      - name: Cache Node.js modules
-        uses: actions/cache@v2
-        with:
-          path: url-shortner/node_modules
-          key: ${{ runner.OS }}-node-${{ hashFiles('url-shortner/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.OS }}-node-
-
-      - name: Test URL Shortner Server
+      - name: Test URL Shortner
         if: steps.filter-changed-files.outputs.url-shortner == 'true'
-        run: |
-          cd url-shortner
-          yarn install
-          yarn test
-
-    #   - name: Cache Node.js modules for Client
-    #     uses: actions/cache@v2
-    #     with:ß
-    #       path: url-shortner/client/node_modules
-    #       key: ${{ runner.OS }}-node-${{ hashFiles('url-shortner/client/package-lock.json') }}
-    #       restore-keys: |
-    #         ${{ runner.OS }}-node-
-
-    #   - name: Test URL Shortner Client
-    #     if: steps.filter-changed-files.outputs.url-shortner == 'true'
-    #     run: |
-    #       cd url-shortner/client
-    #       yarn install
-    #       yarn build
-    #       yarn test
+        uses: ./.github/actions/test-node-app
+        with:
+          directory: "url-shortner"
+        #   client-directory: "url-shortner/client"

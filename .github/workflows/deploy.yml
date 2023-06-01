@@ -12,12 +12,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Get changed files
-        id: changed-files
-        uses: jitterbit/get-changed-files@v1
-        with:
-          format: "json"
-
       - name: Filter changed files
         id: filter-changed-files
         uses: dorny/paths-filter@v2
@@ -27,7 +21,6 @@ jobs:
               - 'url-shortner/**'
               - '!url-shortner/**/*.test.ts'
               - '!url-shortner/**/*.md'
-              exclude:
 
       - name: Set commit hash as env var
         run: echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
