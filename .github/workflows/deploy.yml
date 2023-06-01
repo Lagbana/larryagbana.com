@@ -12,12 +12,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Get changed files
-        id: changed-files
-        uses: jitterbit/get-changed-files@v1
-        with:
-          format: "json"
-
       - name: Filter changed files
         id: filter-changed-files
         uses: dorny/paths-filter@v2
