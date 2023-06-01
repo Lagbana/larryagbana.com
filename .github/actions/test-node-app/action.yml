@@ -11,7 +11,7 @@ runs:
   using: "composite"
   steps:
     - name: Cache Node.js modules
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: ${{ inputs.directory }}/node_modules
         key: ${{ runner.OS }}-node-${{ hashFiles('${{ inputs.directory }}/package-lock.json') }}
@@ -30,7 +30,7 @@ runs:
 
     - name: Cache node modules for client
       if: inputs.client-directory != ''
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: ${{ inputs.client-directory }}/node_modules
         key: ${{ runner.OS }}-node-${{ hashFiles('${{ inputs.client-directory }}/package-lock.json') }}

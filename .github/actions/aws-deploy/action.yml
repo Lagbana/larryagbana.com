@@ -7,11 +7,14 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Set up Node.js and Yarn
-      uses: actions/setup-node@v2
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
       with:
-        node-version: 18.x
-        yarn-version: 1.22.19
+        node-version: 18
+
+    - name: Install Yarn
+      run: npm install -g yarn@1.22.19
+      shell: bash
 
     - name: Install AWS CDK
       run: |
