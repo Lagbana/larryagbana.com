@@ -30,3 +30,10 @@ jobs:
         uses: ./.github/actions/aws-deploy
         with:
           projectName: "url-shortner"
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          SHORTNER_BASE_URL: ${{ secrets.SHORTNER_BASE_URL }}
+          SHORTNER_TABLE_PREFIX: ${{ secrets.SHORTNER_TABLE_PREFIX }}
+          SHORTNER_TABLE_NAME: ${{ secrets.SHORTNER_TABLE_NAME }}

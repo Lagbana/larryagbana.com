@@ -1,5 +1,4 @@
-# .github/actions/deploy-project/action.yml
-name: "Deploy project"
+name: "Deploy action"
 description: "Deploys the specified project if any of its files have changed"
 inputs:
   projectName:
@@ -9,11 +8,9 @@ runs:
   using: "composite"
   steps:
     - name: Set up Node.js
-      run: |
-        echo "Setting up Node.js..."
-        curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
-        sudo apt-get install -y nodejs
-      shell: bash
+      uses: actions/setup-node@v2
+      with:
+        node-version: 18.x
 
     - name: Install AWS CDK
       run: |
@@ -28,10 +25,3 @@ runs:
         npm install
         cdk deploy --all --require-approval never
       shell: bash
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_REGION: ${{ secrets.AWS_REGION }}
-        SHORTNER_BASE_URL: ${{ secrets.SHORTNER_BASE_URL }}
-        SHORTNER_TABLE_PREFIX: ${{ secrets.SHORTNER_TABLE_PREFIX }}
-        SHORTNER_TABLE_NAME: ${{ secrets.SHORTNER_TABLE_NAME }}
