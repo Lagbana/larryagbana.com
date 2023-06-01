@@ -13,13 +13,14 @@ export async function handler(event: APIGatewayProxyEvent, context: Context) {
   try {
     switch (event.httpMethod) {
       case "POST":
-        if (!isValidURL(event.body)) {
+        const body = JSON.parse(event.body) as { url: string };
+        if (!isValidURL(body.url)) {
           return {
             statusCode: 400,
             body: JSON.stringify(`Bad request: Invalid URL.`),
           };
         }
-        result = await coreService.createShortenedUrl(event.body);
+        result = await coreService.createShortenedUrl(body.url);
         break;
       default:
         break;
