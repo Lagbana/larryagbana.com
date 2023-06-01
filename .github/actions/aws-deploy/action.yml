@@ -16,13 +16,13 @@ runs:
     - name: Install AWS CDK
       run: |
         echo "Installing AWS CDK..."
-        npm install -g aws-cdk
+        yarn global add aws-cdk
       shell: bash
 
     - name: Deploy
       run: |
         echo "Deploying ${{ inputs.projectName }}..."
         cd ${{ inputs.projectName }}
-        npm install
+        yarn install
         cdk deploy --all --require-approval never
       shell: bash
