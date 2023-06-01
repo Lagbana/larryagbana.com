@@ -1,0 +1,56 @@
+name: "Lint and Test"
+description: "Install dependencies and run tests for a Node.js app and optional client"
+inputs:
+  directory:
+    description: "Directory of the Node.js app"
+    required: true
+  client-directory:
+    description: "Directory of the client application"
+    required: false
+runs:
+  using: "composite"
+  steps:
+    - name: Cache Node.js modules
+      uses: actions/cache@v2
+      with:
+        path: ${{ inputs.directory }}/node_modules
+        key: ${{ runner.OS }}-node-${{ hashFiles('${{ inputs.directory }}/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.OS }}-node-
+
+    - name: Install dependencies
+      run: yarn install
+      shell: bash
+      working-directory: ${{ inputs.directory }}
+
+    - name: Run tests
+      run: yarn test
+      shell: bash
+      working-directory: ${{ inputs.directory }}
+
+    - name: Cache node modules for client
+      if: inputs.client-directory != ''
+      uses: actions/cache@v2
+      with:
+        path: ${{ inputs.client-directory }}/node_modules
+        key: ${{ runner.OS }}-node-${{ hashFiles('${{ inputs.client-directory }}/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.OS }}-node-
+
+    - name: Install dependencies for client
+      if: inputs.client-directory != ''
+      run: yarn install
+      shell: bash
+      working-directory: ${{ inputs.client-directory }}
+
+    - name: Build client
+      if: inputs.client-directory != ''
+      run: yarn build
+      shell: bash
+      working-directory: ${{ inputs.client-directory }}
+
+    - name: Run tests for client
+      if: inputs.client-directory != ''
+      run: yarn test
+      shell: bash
+      working-directory: ${{ inputs.client-directory }}
