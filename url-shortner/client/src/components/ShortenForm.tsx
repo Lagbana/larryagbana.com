@@ -2,6 +2,7 @@ import React, { useState, useCallback } from "react";
 import styled from "styled-components";
 import { validateUrl } from "../utils";
 import throttle from "lodash.throttle";
+import { ENDPOINT_URL } from "../config";
 
 const Form = styled.form`
   display: flex;
@@ -38,8 +39,6 @@ const ShortenedUrl = styled.p`
   color: #495057;
 `;
 
-const API_ENDPOINT = process.env.SHORTNER_API!;
-
 export const ShortenForm = () => {
   const [url, setUrl] = useState("");
   const [shortenedUrl, setShortenedUrl] = useState("");
@@ -54,14 +53,18 @@ export const ShortenForm = () => {
         return;
       }
 
-      const response = await fetch(API_ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url }),
-      });
+      try {
+        const response = await fetch(ENDPOINT_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url }),
+        });
 
-      const data = await response.json();
-      setShortenedUrl(data.shortenedUrl);
+        const data = await response.json();
+        setShortenedUrl(data.shortenedUrl);
+      } catch (error) {
+        console.error(`Fetch operation error: `, error);
+      }
     }, 1000),
     [url]
   );
