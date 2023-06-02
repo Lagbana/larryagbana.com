@@ -19,13 +19,14 @@ export class ApiStack extends Stack {
 
     const optionsWithCors: ResourceOptions = {
       defaultCorsPreflightOptions: {
-        allowOrigins: ["http://localhost:5173"],
-        allowMethods: ["POST"],
+        allowOrigins: ["http://localhost:3000"],
+        allowMethods: ["GET", "POST"],
       },
     };
 
     const apiResource = api.root.addResource("shortner", optionsWithCors);
 
+    apiResource.addMethod("GET", props.lambdaIntegration);
     apiResource.addMethod("POST", props.lambdaIntegration);
 
     new CfnOutput(this, "ShortnerApiEndpoint", {

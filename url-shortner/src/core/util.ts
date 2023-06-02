@@ -2,8 +2,11 @@ export function createdShortenedUrl(
   base64url: string,
   shortenedDomain: string
 ) {
-  const chopped = base64url.slice(0, 6);
-  return shortenedDomain + chopped;
+  const id = base64url.slice(0, 7);
+  return {
+    id,
+    shortUrl: shortenedDomain + id,
+  };
 }
 
 export function createBase64Url(url: string) {
