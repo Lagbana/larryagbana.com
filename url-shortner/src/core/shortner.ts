@@ -6,66 +6,77 @@ import {
 import { marshall, unmarshall } from "@aws-sdk/util-dynamodb";
 import { createdShortenedUrl, createBase64Url } from "./util";
 import { APIGatewayProxyResult } from "aws-lambda";
+import { SHORTNER_BASE_URL } from "../config";
 
-const SHORTNER_BASE_URL = process.env.SHORTNER_BASE_URL;
 const ddbClient = new DynamoDBClient({});
 
-type UrlRecord = Record<string, { originalUrl: string; shortenedUrl: string }>;
+type UrlRecord = { id: string; originalUrl: string; shortUrl: string };
 
 export class CoreService {
   async createShortenedUrl(
     originalUrl: string
   ): Promise<APIGatewayProxyResult> {
     const base64Url = createBase64Url(originalUrl);
-
-    const previousRecord = await this.#getShortenedUrl(base64Url);
-
-    if (previousRecord) {
-      return {
-        statusCode: 200,
-        body: JSON.stringify({
-          shortenedUrl: previousRecord[base64Url].shortenedUrl,
-        }),
-      };
-    }
-
-    const shortenedUrl = createdShortenedUrl(base64Url, SHORTNER_BASE_URL);
+    const { id, shortUrl } = createdShortenedUrl(base64Url, SHORTNER_BASE_URL);
 
     const record: UrlRecord = {
-      [base64Url]: {
-        originalUrl,
-        shortenedUrl,
-      },
+      id,
+      originalUrl,
+      shortUrl,
     };
 
-    ddbClient.send(
-      new PutItemCommand({
-        TableName: process.env.SHORTNER_TABLE_NAME,
-        Item: marshall(record),
-      })
-    );
+    try {
+      await ddbClient.send(
+        new PutItemCommand({
+          TableName: process.env.SHORTNER_TABLE_NAME,
+          Item: marshall(record),
+          ConditionExpression: "attribute_not_exists(id)",
+        })
+      );
+    } catch (error) {
+      if (error.name === "ConditionalCheckFailedException") {
+        // record already exists in dynamodb, just return
+        return {
+          statusCode: 200,
+          body: JSON.stringify({ shortenedUrl: record.shortUrl }),
+        };
+      } else {
+        throw error;
+      }
+    }
 
     return {
       statusCode: 201,
-      body: JSON.stringify({ shortenedUrl: record[base64Url].shortenedUrl }),
+      body: JSON.stringify({ shortenedUrl: record.shortUrl }),
     };
   }
 
-  async #getShortenedUrl(base64Url: string): Promise<UrlRecord | null> {
+  async getOriginalUrl(urlId: string): Promise<APIGatewayProxyResult> {
     const getItem = await ddbClient.send(
       new GetItemCommand({
         TableName: process.env.SHORTNER_TABLE_NAME,
         Key: {
-          id: { S: base64Url },
+          id: { S: urlId },
         },
       })
     );
 
     if (getItem.Item) {
-      const umarshalledItem = unmarshall(getItem.Item) as UrlRecord;
-      return umarshalledItem;
+      const unmarshalledItem = unmarshall(getItem.Item) as UrlRecord;
+      const originalUrl = unmarshalledItem.originalUrl;
+
+      return {
+        statusCode: 301,
+        headers: {
+          Location: originalUrl,
+        },
+        body: "",
+      };
     }
 
-    return null;
+    return {
+      statusCode: 400,
+      body: "Bad request: Invalid URL.",
+    };
   }
 }

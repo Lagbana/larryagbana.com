@@ -1,6 +1,6 @@
 # URL Shortener
 
-This is a url shortner service that takes in a valid URL and returns a shortned URL in the form `https://t.ink/xxxxxx`.
+This is a url shortner service that takes in a valid URL and returns a shortned URL in the form `https://xhit.ca/xxxxxxx`.
 
 ## Dependencies
 
