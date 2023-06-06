@@ -1,4 +1,8 @@
-import { createdShortenedUrl, createBase64Url, isValidURL } from "./util";
+import {
+  createdShortenedUrl,
+  createBase64Url,
+  isValidURL,
+} from "../../src/core/util";
 
 describe("Utility functions", () => {
   it("creates shortened URL", () => {
