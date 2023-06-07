@@ -10,6 +10,7 @@ import { type StackProps } from "aws-cdk-lib";
 
 interface ApiStackProps extends StackProps {
   lambdaIntegration: LambdaIntegration;
+  version: string;
 }
 export class ApiStack extends Stack {
   constructor(scope: Construct, id: string, props: ApiStackProps) {
@@ -34,7 +35,7 @@ export class ApiStack extends Stack {
     });
 
     new CfnOutput(this, "Version", {
-      value: process.env.COMMIT_HASH,
+      value: props.version,
     });
   }
 }

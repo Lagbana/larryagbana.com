@@ -1,40 +1,97 @@
-process.env.COMMIT_HASH = "test_commit_hash";
-
 import { App, Stack } from "aws-cdk-lib";
-import {
-  Annotations,
-  Capture,
-  Match,
-  MatchCapture,
-  MatchFailure,
-  MatchResult,
-  Matcher,
-  Template,
-} from "aws-cdk-lib/assertions";
+import { Capture, Match, Template } from "aws-cdk-lib/assertions";
 import { LambdaIntegration } from "aws-cdk-lib/aws-apigateway";
 import { ApiStack } from "../../src/infra/stacks/apiStack";
-import { LambdaStack } from "../../src/infra/stacks/lambdaStack";
-import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
+import { Function as LambdaFunction } from "aws-cdk-lib/aws-lambda";
+import { Code, Runtime } from "aws-cdk-lib/aws-lambda";
 
-describe("Api stack test suite", () => {
+describe("ApiStack", () => {
   let assert: Template;
 
   beforeAll(() => {
     const testApp = new App({
       outdir: "cdk.out",
     });
-    // const mockLambda = new NodejsFunction(testApp, "ShortnerLambdaStack");
-    // const mockLambdaIntegration = new LambdaIntegration(mockLambda);
+
+    const mockLambdaStack = new Stack(testApp, "MockLambdaStack");
+    const mockLambda = new LambdaFunction(mockLambdaStack, "MockLambda", {
+      runtime: Runtime.NODEJS_18_X,
+      handler: "index.handler",
+      code: Code.fromInline(
+        "exports.handler = function(event, ctx, cb) { return cb(null, 'hi'); }"
+      ),
+    });
+    const mockLambdaIntegration = new LambdaIntegration(mockLambda);
     const apiStack = new ApiStack(testApp, "ApiStack", {
-      lambdaIntegration: null,
-      // lambdaIntegration: mockLambdaIntegration,
+      lambdaIntegration: mockLambdaIntegration,
+      version: "test_commit_hash",
     });
     assert = Template.fromStack(apiStack);
   });
 
   test("ApiGateway properties", () => {
+    // Assert a RestApi is created
     assert.hasResourceProperties("AWS::ApiGateway::RestApi", {
       Name: "UrlShortnerApi",
+    });
+
+    // Assert an API resource with the path "shortner" is created
+    assert.hasResourceProperties("AWS::ApiGateway::Resource", {
+      PathPart: "shortner",
+    });
+
+    // Assert CORS is set up correctly
+    assert.resourcePropertiesCountIs(
+      "AWS::ApiGateway::Method",
+      {
+        HttpMethod: "OPTIONS",
+        Integration: {
+          IntegrationResponses: [
+            {
+              ResponseParameters: {
+                "method.response.header.Access-Control-Allow-Headers":
+                  "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                "method.response.header.Access-Control-Allow-Origin":
+                  "'http://localhost:3000'",
+                "method.response.header.Vary": "'Origin'",
+                "method.response.header.Access-Control-Allow-Methods":
+                  "'GET,POST'",
+              },
+              StatusCode: "204",
+            },
+          ],
+        },
+        MethodResponses: [
+          {
+            ResponseParameters: {
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Vary": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+            },
+            StatusCode: "204",
+          },
+        ],
+      },
+      1
+    );
+
+    // Assert GET and POST methods are set up
+    assert.resourcePropertiesCountIs(
+      "AWS::ApiGateway::Method",
+      {
+        Integration: Match.objectLike({
+          Type: "AWS_PROXY",
+          Uri: { "Fn::Join": Match.anyValue() },
+        }),
+      },
+      2
+    );
+
+    // Assert Outputs
+    assert.hasOutput("ShortnerApiEndpoint", {});
+    assert.hasOutput("Version", {
+      Value: "test_commit_hash",
     });
   });
 
@@ -66,9 +123,13 @@ describe("Api stack test suite", () => {
   });
 
   test("Lambda integration", () => {
-    assert.toJSON();
-    // assert.hasResourceProperties("AWS::Lambda::Permission", {
-    //   // Vpc: Match.absent(),
-    // });
+    assert.resourcePropertiesCountIs(
+      "AWS::Lambda::Permission",
+      {
+        Action: "lambda:InvokeFunction",
+        Principal: "apigateway.amazonaws.com",
+      },
+      4
+    );
   });
 });
