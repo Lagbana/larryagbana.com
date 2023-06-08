@@ -1,7 +1,7 @@
 import { App, Stack } from "aws-cdk-lib";
 import { Capture, Match, Template } from "aws-cdk-lib/assertions";
 import { LambdaIntegration } from "aws-cdk-lib/aws-apigateway";
-import { ApiStack } from "../../src/infra/stacks/apiStack";
+import { ApiStack } from "../../src/infra/stacks/ApiStack";
 import { Function as LambdaFunction } from "aws-cdk-lib/aws-lambda";
 import { Code, Runtime } from "aws-cdk-lib/aws-lambda";
 
