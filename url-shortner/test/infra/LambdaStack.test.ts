@@ -16,7 +16,6 @@ describe("LambdaStack", () => {
     });
     const mockLambdaStack = new LambdaStack(testApp, "MockLambdaStack", {
       shortnerTable: MOCK_TABLE,
-      version: "test_commit_hash",
     });
 
     assert = Template.fromStack(mockLambdaStack);
@@ -37,17 +36,13 @@ describe("LambdaStack", () => {
         },
         Handler: "index.handler",
         Runtime: "nodejs18.x",
-        Timeout: 1,
+        Timeout: 5,
       },
     });
 
     expect(
       dependencyCapture.asString().match(/ShortnerLambdaServiceRole/)
     ).not.toBeNull();
-
-    assert.hasOutput("Version", {
-      Value: "test_commit_hash",
-    });
   });
 
   test("lambda has correct iam permissions", () => {

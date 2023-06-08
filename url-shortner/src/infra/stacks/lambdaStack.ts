@@ -8,11 +8,9 @@ import { join } from "path";
 
 import { DynamodbOperations } from "../util";
 import { Effect, PolicyStatement } from "aws-cdk-lib/aws-iam";
-import { CfnDisk } from "aws-cdk-lib/aws-lightsail";
 
 interface LambdaStackProps extends StackProps {
   shortnerTable: ITable;
-  version: string;
 }
 export class LambdaStack extends Stack {
   public readonly lambdaIntegration: LambdaIntegration;
@@ -27,7 +25,7 @@ export class LambdaStack extends Stack {
       environment: {
         TABLE_NAME: props.shortnerTable.tableName,
       },
-      timeout: Duration.millis(1000),
+      timeout: Duration.millis(5000),
     });
 
     shortnerLambda.addToRolePolicy(
@@ -43,9 +41,5 @@ export class LambdaStack extends Stack {
     );
 
     this.lambdaIntegration = new LambdaIntegration(shortnerLambda);
-
-    new CfnOutput(this, "Version", {
-      value: props.version,
-    });
   }
 }
