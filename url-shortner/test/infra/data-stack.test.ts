@@ -1,6 +1,6 @@
 import { App } from "aws-cdk-lib";
 import { Template } from "aws-cdk-lib/assertions";
-import { DataStack } from "../../src/infra/stacks/DataStack";
+import { DataStack } from "../../src/infra/stacks/data-stack";
 
 describe("DataStack", () => {
   let assert: Template;

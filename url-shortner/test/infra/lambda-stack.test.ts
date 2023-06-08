@@ -1,6 +1,6 @@
 import { App } from "aws-cdk-lib";
 import { Capture, Match, Template } from "aws-cdk-lib/assertions";
-import { LambdaStack } from "../../src/infra/stacks/LambdaStack";
+import { LambdaStack } from "../../src/infra/stacks/lambda-stack";
 import { ITable } from "aws-cdk-lib/aws-dynamodb";
 
 const MOCK_TABLE = {

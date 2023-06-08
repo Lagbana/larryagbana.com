@@ -1,7 +1,7 @@
 import { App } from "aws-cdk-lib";
-import { ApiStack } from "./stacks/ApiStack";
-import { LambdaStack } from "./stacks/LambdaStack";
-import { DataStack } from "./stacks/DataStack";
+import { ApiStack } from "./stacks/api-stack";
+import { LambdaStack } from "./stacks/lambda-stack";
+import { DataStack } from "./stacks/data-stack";
 import { VERSION } from "../config";
 
 const app = new App();
