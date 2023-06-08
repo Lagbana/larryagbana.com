@@ -30,4 +30,4 @@ jobs:
         uses: ./.github/actions/test-node-app
         with:
           directory: "url-shortner"
-        #   client-directory: "url-shortner/client"
+          client-directory: "url-shortner/client"
