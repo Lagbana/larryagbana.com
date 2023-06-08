@@ -22,9 +22,5 @@ export class DataStack extends Stack {
       },
       tableName: `${prefix}-${suffix}`,
     });
-
-    new CfnOutput(this, "Version", {
-      value: process.env.COMMIT_HASH,
-    });
   }
 }
