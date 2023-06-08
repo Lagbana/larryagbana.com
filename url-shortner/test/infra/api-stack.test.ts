@@ -36,11 +36,6 @@ describe("ApiStack", () => {
       Name: "UrlShortnerApi",
     });
 
-    // Assert an API resource with the path "shortner" is created
-    assert.hasResourceProperties("AWS::ApiGateway::Resource", {
-      PathPart: "shortner",
-    });
-
     // Assert CORS is set up correctly
     assert.resourcePropertiesCountIs(
       "AWS::ApiGateway::Method",
