@@ -10,6 +10,7 @@ const MOCK_TABLE = {
 
 describe("LambdaStack", () => {
   let assert: Template;
+
   beforeAll(() => {
     const testApp = new App({
       outdir: "cdk.out",

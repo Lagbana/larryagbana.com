@@ -4,6 +4,7 @@ import { DataStack } from "../../src/infra/stacks/DataStack";
 
 describe("DataStack", () => {
   let assert: Template;
+
   beforeAll(() => {
     const testApp = new App({
       outdir: "cdk.out",

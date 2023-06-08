@@ -26,6 +26,7 @@ describe("ApiStack", () => {
       lambdaIntegration: mockLambdaIntegration,
       version: "test_commit_hash",
     });
+
     assert = Template.fromStack(apiStack);
   });
 
