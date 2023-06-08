@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import styled from "styled-components";
 import { validateUrl } from "../utils";
 import throttle from "lodash.throttle";
@@ -44,8 +44,8 @@ export const ShortenForm = () => {
   const [shortenedUrl, setShortenedUrl] = useState("");
   const [error, setError] = useState("");
 
-  const throttledSubmit = useCallback(
-    throttle(async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       const validUrl = validateUrl(url);
       if (!validUrl) {
@@ -65,9 +65,15 @@ export const ShortenForm = () => {
       } catch (error) {
         console.error(`Fetch operation error: `, error);
       }
-    }, 1000),
+    },
     [url]
   );
+
+  const throttledSubmit = useMemo(
+    () => throttle(handleSubmit, 1000),
+    [handleSubmit]
+  );
+
   return (
     <>
       <Form onSubmit={throttledSubmit}>
