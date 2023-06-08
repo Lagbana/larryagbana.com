@@ -26,7 +26,7 @@ export class UiDeploymentStack extends Stack {
 
     if (!existsSync(uiDirectory)) {
       console.warn(
-        "The UI directory does not exist. Did you run `npm run build`?"
+        "❌ The UI directory does not exist. Did you run `npm run build`?"
       );
       return;
     }

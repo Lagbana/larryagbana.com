@@ -84,7 +84,6 @@ describe("ApiStack", () => {
       2
     );
 
-    // Assert Outputs
     assert.hasOutput("ShortnerApiEndpoint", {});
     assert.hasOutput("Version", {
       Value: "test_commit_hash",
