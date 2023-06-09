@@ -1,3 +1,5 @@
 output.json
 .env
 shortner.http
+node_modules
+cdk.out

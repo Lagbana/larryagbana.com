@@ -3,11 +3,11 @@
 </div>
 
 <h1 align="center">
-  anmolsingh.me
+  larryagbana.com
 </h1>
 <p align="center">
   This is my personal website here i update lots of things which can not be summed up in my resume
-  visit <a href="https://anmolsingh.me" target="_blank">anmolsingh.me</a>
+  visit <a href="https://larryagbana.com" target="_blank">larryagbana.com</a>
 </p>
 
 
