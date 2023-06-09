@@ -1,4 +1,4 @@
-import { validateUrl } from "./";
+import { validateUrl } from ".";
 
 describe("Utils", () => {
   it("validates input as url", () => {
