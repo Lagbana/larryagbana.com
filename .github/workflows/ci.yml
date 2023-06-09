@@ -20,14 +20,14 @@ jobs:
         uses: dorny/paths-filter@v2
         with:
           filters: |
-            url-shortner:
-              - 'url-shortner/**'
-              - '!url-shortner/**/*.md'
-              - '!url-shortner/.gitignore'
+            aws-cdk:
+              - 'aws-cdk/**'
+              - '!aws-cdk/**/*.md'
+              - '!aws-cdk/.gitignore'
 
-      - name: Test URL Shortner
-        if: steps.filter-changed-files.outputs.url-shortner == 'true'
+      - name: Test aws-cdk project
+        if: steps.filter-changed-files.outputs.aws-cdk == 'true'
         uses: ./.github/actions/test-node-app
         with:
-          directory: "url-shortner"
-          client-directory: "url-shortner/client"
+          directory: "aws-cdk"
+          client-directory: "aws-cdk/client"
