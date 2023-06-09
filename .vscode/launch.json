@@ -15,6 +15,20 @@
         "AWS_REGION": "us-east-1",
         "TABLE_NAME": "SpacesTable-0e03cf9d7dff"
       }
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Jest Current Url Shortner File",
+      "program": "${workspaceFolder}/url-shortner/node_modules/.bin/jest",
+      "args": [
+        "--runTestsByPath",
+        "${relativeFile}",
+        "--config",
+        "url-shortner/jest.config.ts"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
     }
   ]
 }
