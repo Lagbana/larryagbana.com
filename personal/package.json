@@ -7,9 +7,6 @@
     "type": "git",
     "url": "https://github.com/Lagbana/larryagbana.com/tree/main/personal"
   },
-  "engines": {
-    "node": "16.9.0"
-  },
   "keywords": [
     "gatsby"
   ],
