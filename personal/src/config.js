@@ -1,41 +1,28 @@
 module.exports = {
-  siteTitle: 'Anmol Pratap Singh | Software Engineer',
+  siteTitle: 'Larry Agbana | Software Engineer',
   siteDescription:
-    'Anmol Singh is a software engineer based in Banglore, India who specializes in building (and occasionally designing) exceptional websites, applications, and everything in between.',
+    'Larry Agbana is a software engineer who specializes in building exceptional digital experiences and architecting scalable applications.',
   siteKeywords:
-    'Anmol Singh, Anmol, singh, anmol098, software engineer, back-end engineer, web developer, javascript, indian',
-  siteUrl: 'https://anmolsingh.me',
+    'Larry Agbana, Larry, Agbana, Lagbana, software engineer, back-end engineer, web developer, javascript, react, go, python',
+  siteUrl: 'https://larryagbana.com',
   siteLanguage: 'en_US',
-  googleAnalyticsID: 'UA-127188467-2',
-  googleVerification: 'zWJzGMVk8J4FpXsLNpt7CB17SPaa2_ti9YfdGwnGr00',
-  name: 'Anmol Pratap Singh',
-  location: 'Banglore, India',
-  email: 'hi@anmolsingh.me',
-  github: 'https://github.com/anmol098',
-  twitterHandle: '@misteranmol',
+  // googleAnalyticsID: 'UA-127188467-2',
+  // googleVerification: 'zWJzGMVk8J4FpXsLNpt7CB17SPaa2_ti9YfdGwnGr00',
+  name: 'Larry Agbana',
+  location: 'Ontario, Canada',
+  email: 'larryagbana@gmail.com',
+  github: 'https://github.com/Lagbana',
   socialMedia: [
     {
       name: 'GitHub',
-      url: 'https://github.com/anmol098',
+      url: 'https://github.com/Lagbana',
     },
     {
       name: 'Linkedin',
-      url: 'https://www.linkedin.com/in/anmol098',
-    },
-    {
-      name: 'Npm',
-      url: 'npx anmol',
-    },
-    {
-      name: 'Instagram',
-      url: 'https://www.instagram.com/misteranmol',
-    },
-    {
-      name: 'Twitter',
-      url: 'https://twitter.com/misteranmol',
+      url: 'https://linkedin.com/in/larryagbana',
     },
   ],
-  lastUpdated: '16-Sep-2022',
+  lastUpdated: '08-June-2023',
 
   navLinks: [
     {
@@ -64,7 +51,7 @@ module.exports = {
     darkNavy: '#020c1b',
   },
 
-  srConfig: (delay = 200) => ({
+  srConfig: (delay = 200, viewFactor = 0.25) => ({
     origin: 'bottom',
     distance: '20px',
     duration: 500,
@@ -76,7 +63,7 @@ module.exports = {
     mobile: true,
     reset: false,
     useDelay: 'always',
-    viewFactor: 0.25,
+    viewFactor,
     viewOffset: { top: 0, right: 0, bottom: 0, left: 0 },
   }),
 };

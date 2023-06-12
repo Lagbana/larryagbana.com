@@ -10,7 +10,6 @@
   visit <a href="https://larryagbana.com" target="_blank">larryagbana.com</a>
 </p>
 
-
 ![demo](https://user-images.githubusercontent.com/15426564/90930848-12dcd880-e419-11ea-8b58-ded1f587a3ec.png)
 
 ## 🚨 Forking this repo (please read!)
@@ -48,7 +47,7 @@ Yes, you can fork this repo. Please give proper credit by linking back to [britt
 4. Start the development server
 
    ```sh
-   npm start
+   yarn start
    ```
 
 ## 🚀 Building and Running for Production
@@ -78,11 +77,10 @@ Yes, you can fork this repo. Please give proper credit by linking back to [britt
 | White          | ![#e6f1ff](https://via.placeholder.com/10/e6f1ff?text=+) `#e6f1ff` |
 | Green          | ![#64ffda](https://via.placeholder.com/10/64ffda?text=+) `#64ffda` |
 
+```sh
+vercel dev
+```
 
-   ```sh
-   vercel dev
-   ```
-
-   ```sh
-   vercel --prod
-   ```
+```sh
+vercel --prod
+```

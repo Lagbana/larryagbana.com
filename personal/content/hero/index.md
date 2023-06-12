@@ -1,8 +1,8 @@
 ---
 title: 'Hi, my name is'
-name: 'Anmol Singh'
-subtitle: 'I build things on web.'
+name: 'Larry Agbana'
+subtitle: 'I build things for the web.'
 buttonText: 'Get In Touch'
 ---
 
-I'm a software engineer based in Banglore, India specializing in building (and occasionally designing) exceptional websites, applications, and everything in between.
+I'm a full-stack software engineer based in Ontario, Canada, specializing in building exceptional web and mobile applications and architecting scalable backend systems.
