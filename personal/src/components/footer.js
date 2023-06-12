@@ -90,7 +90,7 @@ const Footer = () => {
 
       <StyledCredit tabindex="-1">
         <a href="https://github.com/bchiang7/v4">
-          <div>Designed &amp; Built by Brittany Chiang | Modified by Larry Agbana</div>
+          <div>Designed by Brittany Chiang | Modified by Larry Agbana</div>
         </a>
       </StyledCredit>
     </StyledFooter>

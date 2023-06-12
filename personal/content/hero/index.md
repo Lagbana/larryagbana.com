@@ -5,4 +5,4 @@ subtitle: 'I build things for the web.'
 buttonText: 'Get In Touch'
 ---
 
-I'm a fullstack software engineer based in Ontario, Canada specializing in building (and occasionally designing) exceptional websites, mobile applications, and highly scalable systems.
+I'm a full-stack software engineer based in Ontario, Canada, specializing in building exceptional web and mobile applications and architecting scalable backend systems.

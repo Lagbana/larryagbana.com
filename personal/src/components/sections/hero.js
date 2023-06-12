@@ -3,6 +3,7 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import styled from 'styled-components';
 import { navDelay, loaderDelay } from '@utils';
 import { usePrefersReducedMotion } from '@hooks';
+import { email } from '@config';
 
 const StyledHeroSection = styled.section`
   ${({ theme }) => theme.mixins.flexCenter};
@@ -61,18 +62,22 @@ const Hero = () => {
 
   const one = <h1>Hi, my name is</h1>;
   const two = <h2 className="big-heading">Larry Agbana.</h2>;
-  const three = <h3 className="big-heading">I build things for the web.</h3>;
+  const three = <h3 className="small-heading">I Engineer End to End Digital Experiences.</h3>;
   const four = (
     <>
       <p>
-        I'm a fullstack software engineer based in Ontario, Canada specializing in building (and
-        occasionally designing) exceptional websites, mobile applications, and highly scalable
-        systems.
+        I'm a full-stack software engineer based in Ontario, Canada, specializing in building
+        exceptional web and mobile applications and architecting scalable backend systems.
       </p>
     </>
   );
+  const five = (
+    <a className="email-link" href={`mailto:${email}`}>
+      Get In Touch
+    </a>
+  );
 
-  const items = [one, two, three, four];
+  const items = [one, two, three, four, five];
 
   return (
     <StyledHeroSection>
