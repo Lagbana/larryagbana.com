@@ -39,7 +39,7 @@ export const Nav = () => {
   return (
     <Wrapper>
       <Header>
-        <Logo>Url Shortner</Logo>
+        <Logo>xhit</Logo>
         <IconContainer>
           <IconLink
             href='https://github.com/Lagbana'

@@ -39,6 +39,17 @@ const ShortenedUrl = styled.p`
   color: #495057;
 `;
 
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  height: 30vh;
+  width: 80%;
+  background-color: white;
+  border-radius: 8px;
+`;
+
 export const ShortenForm = () => {
   const [url, setUrl] = useState("");
   const [shortenedUrl, setShortenedUrl] = useState("");
@@ -75,7 +86,7 @@ export const ShortenForm = () => {
   );
 
   return (
-    <>
+    <Wrapper>
       <Form onSubmit={throttledSubmit}>
         <Input
           type='text'
@@ -89,6 +100,6 @@ export const ShortenForm = () => {
         <ShortenedUrl>Shortened URL: {shortenedUrl}</ShortenedUrl>
       )}
       {error && <p>{error}</p>}
-    </>
+    </Wrapper>
   );
 };
