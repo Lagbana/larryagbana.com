@@ -6,13 +6,16 @@ import { getSuffixFromStack } from "../util";
 import { type StackProps } from "aws-cdk-lib";
 import { type ITable } from "aws-cdk-lib/aws-dynamodb";
 
+interface DataStackProps extends StackProps {
+  tableNamePrefix: string;
+}
 export class DataStack extends Stack {
   public readonly shortnerTable: ITable;
 
-  constructor(scope: Construct, id: string, props?: StackProps) {
+  constructor(scope: Construct, id: string, props: DataStackProps) {
     super(scope, id, props);
 
-    const prefix = process.env.SHORTNER_TABLE_PREFIX;
+    const prefix = props.tableNamePrefix;
     const suffix = getSuffixFromStack(this);
 
     this.shortnerTable = new DynamoTable(this, "ShortnerTable", {

@@ -6,7 +6,7 @@ import {
 import { marshall, unmarshall } from "@aws-sdk/util-dynamodb";
 import { createdShortenedUrl, createBase64Url } from "./util";
 import { APIGatewayProxyResult } from "aws-lambda";
-import { SHORTNER_BASE_URL } from "../config";
+import { getEnvVar } from "../config";
 
 const ddbClient = new DynamoDBClient({});
 
@@ -17,7 +17,11 @@ export class CoreService {
     originalUrl: string
   ): Promise<APIGatewayProxyResult> {
     const base64Url = createBase64Url(originalUrl);
-    const { id, shortUrl } = createdShortenedUrl(base64Url, SHORTNER_BASE_URL);
+
+    const { id, shortUrl } = createdShortenedUrl(
+      base64Url,
+      getEnvVar("SHORTNER_BASE_URL")
+    );
 
     const record: UrlRecord = {
       id,
@@ -26,14 +30,17 @@ export class CoreService {
     };
 
     try {
+      const tableName = getEnvVar("SHORTNER_TABLE_NAME");
       await ddbClient.send(
         new PutItemCommand({
-          TableName: process.env.SHORTNER_TABLE_NAME,
+          TableName: tableName,
           Item: marshall(record),
           ConditionExpression: "attribute_not_exists(id)",
         })
       );
     } catch (error) {
+      console.error("Error occurred while putting item in DynamoDB:", error);
+
       if (error.name === "ConditionalCheckFailedException") {
         // record already exists in dynamodb, just return
         return {
@@ -52,9 +59,11 @@ export class CoreService {
   }
 
   async getOriginalUrl(urlId: string): Promise<APIGatewayProxyResult> {
+    const tableName = getEnvVar("SHORTNER_TABLE_NAME");
+
     const getItem = await ddbClient.send(
       new GetItemCommand({
-        TableName: process.env.SHORTNER_TABLE_NAME,
+        TableName: tableName,
         Key: {
           id: { S: urlId },
         },
@@ -73,7 +82,6 @@ export class CoreService {
         body: "",
       };
     }
-
     return {
       statusCode: 400,
       body: "Bad request: Invalid URL.",

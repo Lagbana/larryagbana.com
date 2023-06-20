@@ -23,7 +23,7 @@ export class LambdaStack extends Stack {
       runtime: Runtime.NODEJS_18_X,
       entry: join(__dirname, "..", "..", "controller", "handler.ts"),
       environment: {
-        TABLE_NAME: props.shortnerTable.tableName,
+        SHORTNER_TABLE_NAME: props.shortnerTable.tableName,
       },
       timeout: Duration.millis(5000),
     });
