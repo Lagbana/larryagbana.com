@@ -7,7 +7,9 @@ import { getEnvVar } from "../config";
 
 const app = new App();
 
-const dataStack = new DataStack(app, "ShortnerDataStack");
+const dataStack = new DataStack(app, "ShortnerDataStack", {
+  tableNamePrefix: getEnvVar("SHORTNER_TABLE_PREFIX"),
+});
 const lambdaStack = new LambdaStack(app, "ShortnerLambdaStack", {
   shortnerTable: dataStack.shortnerTable,
 });

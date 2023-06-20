@@ -5,7 +5,7 @@ dotenvConfig();
 export function getEnvVar(varName: string) {
   const value = process.env[varName];
   if (!value) {
-    throw new Error(`Environment variable ${value} is not set`);
+    throw new Error(`Environment variable ${varName} is not set`);
   }
   return value;
 }

@@ -9,7 +9,9 @@ describe("DataStack", () => {
     const testApp = new App({
       outdir: "cdk.out",
     });
-    const mockDataStack = new DataStack(testApp, "MockDataStack");
+    const mockDataStack = new DataStack(testApp, "MockDataStack", {
+      tableNamePrefix: "mock-table-prefix",
+    });
     assert = Template.fromStack(mockDataStack);
   });
 
