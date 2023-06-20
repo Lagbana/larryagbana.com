@@ -22,6 +22,26 @@ runs:
         yarn global add aws-cdk
       shell: bash
 
+    - name: Install dependencies for client
+      run: |
+        if [ -d "${{ inputs.projectName }}/client" ]; then
+          yarn install
+        else
+          echo "No client directory found"
+        fi
+      shell: bash
+      working-directory: ${{ inputs.projectName }}/client
+
+    - name: Build client
+      run: |
+        if [ -d "${{ inputs.projectName }}/client" ]; then
+          yarn build
+        else
+          echo "No client directory found"
+        fi
+      shell: bash
+      working-directory: ${{ inputs.projectName }}/client
+
     - name: Deploy
       run: |
         echo "Deploying ${{ inputs.projectName }}..."
