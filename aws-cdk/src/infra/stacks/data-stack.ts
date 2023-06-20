@@ -1,7 +1,8 @@
-import { Stack } from "aws-cdk-lib";
+import { CfnOutput, Stack } from "aws-cdk-lib";
 import { Table as DynamoTable, AttributeType } from "aws-cdk-lib/aws-dynamodb";
 import { Construct } from "constructs";
 import { getSuffixFromStack } from "../util";
+import { TABLE_PREFIX } from "../../config";
 
 import { type StackProps } from "aws-cdk-lib";
 import { type ITable } from "aws-cdk-lib/aws-dynamodb";
@@ -12,7 +13,7 @@ export class DataStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    const prefix = process.env.SHORTNER_TABLE_PREFIX;
+    const prefix = TABLE_PREFIX;
     const suffix = getSuffixFromStack(this);
 
     this.shortnerTable = new DynamoTable(this, "ShortnerTable", {

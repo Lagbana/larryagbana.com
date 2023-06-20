@@ -1,4 +1,4 @@
-import { Duration, Stack, StackProps } from "aws-cdk-lib";
+import { CfnOutput, Duration, Stack, StackProps } from "aws-cdk-lib";
 import { LambdaIntegration } from "aws-cdk-lib/aws-apigateway";
 import { ITable } from "aws-cdk-lib/aws-dynamodb";
 import { Runtime } from "aws-cdk-lib/aws-lambda";
@@ -23,7 +23,7 @@ export class LambdaStack extends Stack {
       runtime: Runtime.NODEJS_18_X,
       entry: join(__dirname, "..", "..", "controller", "handler.ts"),
       environment: {
-        TABLE_NAME: props.shortnerTable.tableName,
+        SHORTNER_TABLE_NAME: props.shortnerTable.tableName,
       },
       timeout: Duration.millis(5000),
     });
