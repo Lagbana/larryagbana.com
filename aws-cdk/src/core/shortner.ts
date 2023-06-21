@@ -17,7 +17,7 @@ export class CoreService {
     originalUrl: string
   ): Promise<APIGatewayProxyResult> {
     const base64Url = createBase64Url(originalUrl);
-    const shortenedDomain = getEnvVar("SHORTNER_BASE_URL");
+    const shortenedDomain = getEnvVar("SHORTENED_DOMAIN");
     const { id, shortUrl } = createdShortenedUrl(base64Url, shortenedDomain);
 
     const record: UrlRecord = {
