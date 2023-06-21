@@ -24,7 +24,7 @@ runs:
 
     - name: Install dependencies for client
       run: |
-        if [ -d "${{ inputs.projectName }}/client" ]; then
+        if [ -d "." ]; then
           yarn install
         else
           echo "No client directory found"
@@ -34,7 +34,7 @@ runs:
 
     - name: Build client
       run: |
-        if [ -d "${{ inputs.projectName }}/client" ]; then
+        if [ -d "." ]; then
           yarn build
         else
           echo "No client directory found"
