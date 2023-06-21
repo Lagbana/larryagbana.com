@@ -14,7 +14,10 @@ export class ApiStack extends Stack {
 
     const api = new RestApi(this, "UrlShortnerApi");
     api.root.addCorsPreflight({
-      allowOrigins: ["http://localhost:3000"],
+      allowOrigins: [
+        "http://localhost:3000",
+        "https://d218ploksh8jta.cloudfront.net",
+      ],
       allowMethods: ["GET", "POST"],
     });
     api.root.addMethod("GET", props.lambdaIntegration);

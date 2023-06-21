@@ -71,6 +71,10 @@ export const ShortenForm = () => {
           body: JSON.stringify({ url }),
         });
 
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
         const data = await response.json();
         setShortenedUrl(data.shortenedUrl);
       } catch (error) {
