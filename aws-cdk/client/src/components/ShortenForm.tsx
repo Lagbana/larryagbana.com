@@ -8,29 +8,29 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: 15px;
-  padding-top: 80px;
   width: 80%;
   max-width: 500px;
 `;
 
 const Input = styled.input`
-  padding: 10px;
-  font-size: 1rem;
+  padding: 16px;
+  font-size: 20px;
   border: 1px solid #ced4da;
-  border-radius: 5px;
+  border-radius: 8px;
+  margin-top: 0;
 `;
 
 const Button = styled.button`
-  padding: 10px;
-  font-size: 1rem;
-  background-color: #343a40;
+  padding: 18px 30px;
+  font-size: 20px;
+  background-color: #2a5bd7;
   color: #ffffff;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
 
   &:hover {
-    background-color: #495057;
+    background-color: #3c6fe0;
   }
 `;
 
@@ -41,13 +41,20 @@ const ShortenedUrl = styled.p`
 
 const Wrapper = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-content: center;
   align-items: center;
-  height: 30vh;
+  height: 40vh;
   width: 80%;
   background-color: white;
   border-radius: 8px;
+`;
+
+const CTAHeader = styled.h1``;
+
+const CTASubHeader = styled.h3`
+  margin: 0;
 `;
 
 export const ShortenForm = () => {
@@ -92,13 +99,15 @@ export const ShortenForm = () => {
   return (
     <Wrapper>
       <Form onSubmit={throttledSubmit}>
+        <CTAHeader>Shorten a long link</CTAHeader>
+        <CTASubHeader>Paste a long URL</CTASubHeader>
         <Input
           type='text'
           value={url}
           onChange={(e) => setUrl(e.target.value)}
-          placeholder='Enter URL to shorten'
+          placeholder='Example: http://some-long-link.com/shorten-it'
         />
-        <Button type='submit'>Shorten</Button>
+        <Button type='submit'>Get your link</Button>
       </Form>
       {shortenedUrl && (
         <ShortenedUrl>Shortened URL: {shortenedUrl}</ShortenedUrl>
