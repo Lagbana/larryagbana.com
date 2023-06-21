@@ -32,6 +32,7 @@ jobs:
         uses: ./.github/actions/aws-deploy
         with:
           projectName: "aws-cdk"
+          cloudfrontDistributionId: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -39,4 +40,3 @@ jobs:
           SHORTNER_BASE_URL: ${{ secrets.SHORTNER_BASE_URL }}
           SHORTNER_TABLE_PREFIX: ${{ secrets.SHORTNER_TABLE_PREFIX }}
           REACT_APP_ENDPOINT_API: ${{ secrets.REACT_APP_ENDPOINT_API }}
-          CLOUDFRONT_DISTRIBUTION_ID: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
