@@ -17,6 +17,7 @@ describe("LambdaStack", () => {
     });
     const mockLambdaStack = new LambdaStack(testApp, "MockLambdaStack", {
       shortnerTable: MOCK_TABLE,
+      shortnerBaseUrl: "short.ca/",
     });
 
     assert = Template.fromStack(mockLambdaStack);
