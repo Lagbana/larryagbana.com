@@ -22,6 +22,13 @@ runs:
         yarn global add aws-cdk
       shell: bash
 
+    - name: Install AWS CLI
+      run: |
+        curl "https://d1vvhvl2y92vvt.cloudfront.net/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+        unzip awscliv2.zip
+        sudo ./aws/install
+      shell: bash
+
     - name: Install dependencies for client
       run: |
         if [ -d "." ]; then
@@ -48,4 +55,15 @@ runs:
         cd ${{ inputs.projectName }}
         yarn install
         cdk deploy --all --require-approval never
+      shell: bash
+
+    - name: Check for client changes
+      id: check-client-changes
+      run: |
+        git diff --quiet HEAD^ HEAD -- ./client/src ./client/public ./client/yarn.lock || echo "client core changed"
+      shell: bash
+
+    - name: Invalidate CloudFront cache
+      if: steps.check-client-changes.outcome == 'failure'
+      run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
       shell: bash
