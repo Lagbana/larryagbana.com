@@ -4,8 +4,8 @@ import App from "./App";
 
 test("renders shortener form", () => {
   render(<App />);
-  const input = screen.getByPlaceholderText("Enter URL to shorten");
-  const submitButton = screen.getByText("Shorten");
+  const input = screen.getByPlaceholderText(/Example: http:/);
+  const submitButton = screen.getByText("Get your link");
   expect(input).toBeInTheDocument();
   expect(submitButton).toBeInTheDocument();
 });
