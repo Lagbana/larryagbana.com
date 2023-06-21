@@ -17,11 +17,13 @@ const Header = styled.header`
   background-color: #f8f9fa;
 `;
 
-const Logo = styled.h1`
-  font-size: 2rem;
-  color: #343a40;
-  padding: 0;
-  margin: 0;
+const Logo = styled.a`
+  display: inline-block;
+`;
+
+const LogoImage = styled.img`
+  width: 100px; // Adjust as needed
+  height: auto; // Keeps image aspect ratio
 `;
 
 const IconContainer = styled.div`
@@ -39,7 +41,9 @@ export const Nav = () => {
   return (
     <Wrapper>
       <Header>
-        <Logo>xhit</Logo>
+        <Logo href='/'>
+          <LogoImage src='logo192.png' alt='Logo' />
+        </Logo>
         <IconContainer>
           <IconLink
             href='https://github.com/Lagbana'
