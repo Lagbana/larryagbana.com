@@ -70,12 +70,16 @@ runs:
       shell: bash
 
     - name: Check for client changes
-      id: check-client-changes
-      run: |
-        git diff --quiet HEAD^ HEAD -- ./client/src ./client/public ./client/yarn.lock || echo "client core changed"
-      shell: bash
+      uses: dorny/paths-filter@v2
+      id: changes
+      with:
+        filters: |
+          client:
+            - './client/src/**'
+            - './client/public/**'
+            - './client/yarn.lock'
 
     - name: Invalidate CloudFront cache
-      if: steps.check-client-changes.outcome == 'failure'
+      if: steps.changes.outputs.client == 'true'
       run: aws cloudfront create-invalidation --distribution-id ${{ inputs.cloudfrontDistributionId }} --paths "/*"
       shell: bash
