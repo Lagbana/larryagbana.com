@@ -26,6 +26,8 @@ export class LambdaStack extends Stack {
         SHORTNER_TABLE_NAME: props.shortnerTable.tableName,
       },
       timeout: Duration.millis(5000),
+      description:
+        "Function to handle creating of shortened URLs and fetching of original URL",
     });
 
     shortnerLambda.addToRolePolicy(
