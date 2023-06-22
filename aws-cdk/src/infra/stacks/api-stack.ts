@@ -17,6 +17,7 @@ export class ApiStack extends Stack {
       allowOrigins: [
         "http://localhost:3000",
         "https://d218ploksh8jta.cloudfront.net",
+        "https://www.xhiturl.ca",
       ],
       allowMethods: ["GET", "POST"],
     });
