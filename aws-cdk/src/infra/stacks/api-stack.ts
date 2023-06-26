@@ -21,7 +21,9 @@ export class ApiStack extends Stack {
       ],
       allowMethods: ["GET", "POST"],
     });
-    api.root.addMethod("GET", props.lambdaIntegration);
+    const urlIdResource = api.root.addResource("{urlId}");
+    urlIdResource.addMethod("GET", props.lambdaIntegration);
+
     api.root.addMethod("POST", props.lambdaIntegration);
 
     new CfnOutput(this, "ShortnerApiEndpoint", {

@@ -30,9 +30,14 @@ describe("handler", () => {
   });
 
   it("returns original URL for GET request", async () => {
+    const pathParameter: {
+      [name: string]: string | undefined;
+    } = {
+      urlId: "someUrlId",
+    };
     const mockEvent = {
       httpMethod: "GET",
-      path: "/someUrlId",
+      pathParameters: pathParameter,
     } as APIGatewayProxyEvent;
 
     const mockContext = {} as Context;
@@ -50,7 +55,7 @@ describe("handler", () => {
 
     expect(
       MockedServiceInstance.mock.instances[0].getOriginalUrl
-    ).toHaveBeenCalledWith("/someUrlId");
+    ).toHaveBeenCalledWith("someUrlId");
 
     expect(result).toEqual({
       statusCode: 200,
@@ -100,9 +105,14 @@ describe("handler", () => {
   });
 
   it("returns 500 error for unhandled exception", async () => {
+    const pathParameter: {
+      [name: string]: string | undefined;
+    } = {
+      urlId: "someUrlId",
+    };
     const mockEvent = {
       httpMethod: "GET",
-      path: "/someUrlId",
+      pathParameters: pathParameter,
     } as APIGatewayProxyEvent;
 
     const mockContext = {} as Context;
