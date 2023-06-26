@@ -1,29 +1,39 @@
-import {
-  createdShortenedUrl,
-  createBase64Url,
-  isValidURL,
-} from "../../src/core/util";
+import { createdShortenedUrl, isValidURL } from "../../src/core/util";
 
-describe("Utility functions", () => {
-  it("creates shortened URL", () => {
-    const base64url = createBase64Url("https://some-long-example-url.com");
-    const result = createdShortenedUrl(base64url, "https://shrt.ca/");
-    expect(result.id).toBe("aHR0cHM");
-    expect(result.shortUrl).toBe("https://shrt.ca/aHR0cHM");
+describe("Utils tests", () => {
+  describe("base62Encode", () => {
+    const base62Characters =
+      "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    it("should generate base62 encoded id", () => {
+      const { id } = createdShortenedUrl("http://test.com/");
+      expect(id.length).toBeGreaterThan(0);
+      [...id].forEach((char) => {
+        expect(base62Characters.includes(char)).toBe(true);
+      });
+    });
   });
 
-  it("creates Base64 URL", () => {
-    const result = createBase64Url("https://some-long-example-url.com");
-    expect(result).toBe("aHR0cHM6Ly9zb21lLWxvbmctZXhhbXBsZS11cmwuY29t");
+  describe("createdShortenedUrl", () => {
+    it("should generate a shortened url", () => {
+      const shortenedDomain = "http://test.com/";
+      const result = createdShortenedUrl(shortenedDomain);
+
+      expect(result.id.length).toBeGreaterThan(0);
+      expect(result.shortUrl).toEqual(expect.stringContaining(shortenedDomain));
+    });
   });
 
-  it("validates URL", () => {
-    const result = isValidURL("https://example.com");
-    expect(result).toBe(true);
-  });
+  describe("isValidURL", () => {
+    it("should return true for valid URLs", () => {
+      expect(isValidURL("https://www.google.com")).toBe(true);
+      expect(isValidURL("http://localhost:3000")).toBe(true);
+    });
 
-  it("invalidates wrong URL", () => {
-    const result = isValidURL("not-a-url");
-    expect(result).toBe(false);
+    it("should return false for invalid URLs", () => {
+      expect(isValidURL("google")).toBe(false);
+      expect(isValidURL(12345)).toBe(false);
+      expect(isValidURL("")).toBe(false);
+    });
   });
 });
