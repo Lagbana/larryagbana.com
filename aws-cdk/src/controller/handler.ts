@@ -13,7 +13,14 @@ export async function handler(event: APIGatewayProxyEvent, context: Context) {
   try {
     switch (event.httpMethod) {
       case "GET":
-        const urlId = event.path;
+        const urlId = event.pathParameters["urlId"];
+        if (!urlId) {
+          result = {
+            statusCode: 404,
+            body: "Not found: No URL provided!",
+          };
+          break;
+        }
         result = await coreService.getOriginalUrl(urlId);
         break;
       case "POST":
