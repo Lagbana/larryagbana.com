@@ -4,7 +4,7 @@ import {
   PutItemCommand,
 } from "@aws-sdk/client-dynamodb";
 import { marshall, unmarshall } from "@aws-sdk/util-dynamodb";
-import { createdShortenedUrl, createBase64Url } from "./util";
+import { createdShortenedUrl } from "./util";
 import { APIGatewayProxyResult } from "aws-lambda";
 import { getEnvVar } from "../config";
 
@@ -16,9 +16,8 @@ export class CoreService {
   async createShortenedUrl(
     originalUrl: string
   ): Promise<APIGatewayProxyResult> {
-    const base64Url = createBase64Url(originalUrl);
     const shortenedDomain = getEnvVar("SHORTENED_DOMAIN");
-    const { id, shortUrl } = createdShortenedUrl(base64Url, shortenedDomain);
+    const { id, shortUrl } = createdShortenedUrl(shortenedDomain);
 
     const record: UrlRecord = {
       id,
@@ -36,8 +35,6 @@ export class CoreService {
         })
       );
     } catch (error) {
-      console.error("Error occurred while putting item in DynamoDB:", error);
-
       if (error.name === "ConditionalCheckFailedException") {
         // record already exists in dynamodb, just return
         return {
@@ -45,6 +42,7 @@ export class CoreService {
           body: JSON.stringify({ shortenedUrl: record.shortUrl }),
         };
       } else {
+        console.error("Error occurred while putting item in DynamoDB:", error);
         throw error;
       }
     }
