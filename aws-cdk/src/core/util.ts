@@ -1,16 +1,25 @@
-export function createdShortenedUrl(
-  base64url: string,
-  shortenedDomain: string
-) {
-  const id = base64url.slice(0, 7);
+function base62Encode(timestamp: number) {
+  const characters =
+    "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  let output = "";
+
+  while (timestamp > 0) {
+    const remainder = timestamp % 62;
+    output = characters.charAt(remainder) + output;
+    timestamp = Math.floor(timestamp / 62);
+  }
+
+  return output;
+}
+
+export function createdShortenedUrl(shortenedDomain: string) {
+  const timestamp = Date.now();
+  const id = base62Encode(timestamp);
+
   return {
     id,
     shortUrl: shortenedDomain + id,
   };
-}
-
-export function createBase64Url(url: string) {
-  return Buffer.from(url).toString("base64url");
 }
 
 export function isValidURL(url: any) {
