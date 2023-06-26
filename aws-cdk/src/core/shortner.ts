@@ -2,6 +2,7 @@ import {
   DynamoDBClient,
   GetItemCommand,
   PutItemCommand,
+  GetItemCommandOutput,
 } from "@aws-sdk/client-dynamodb";
 import { marshall, unmarshall } from "@aws-sdk/util-dynamodb";
 import { createdShortenedUrl } from "./util";
@@ -55,15 +56,21 @@ export class CoreService {
 
   async getOriginalUrl(urlId: string): Promise<APIGatewayProxyResult> {
     const tableName = getEnvVar("SHORTNER_TABLE_NAME");
+    let getItem: GetItemCommandOutput;
 
-    const getItem = await ddbClient.send(
-      new GetItemCommand({
-        TableName: tableName,
-        Key: {
-          id: { S: urlId },
-        },
-      })
-    );
+    try {
+      getItem = await ddbClient.send(
+        new GetItemCommand({
+          TableName: tableName,
+          Key: {
+            id: { S: urlId },
+          },
+        })
+      );
+    } catch (error) {
+      console.error("Error occurred while getting item from DynamoDB:", error);
+      throw error;
+    }
 
     if (getItem.Item) {
       const unmarshalledItem = unmarshall(getItem.Item) as UrlRecord;
@@ -78,8 +85,8 @@ export class CoreService {
       };
     }
     return {
-      statusCode: 400,
-      body: "Bad request: Invalid URL.",
+      statusCode: 404,
+      body: "Not found: Invalid URL!",
     };
   }
 }
