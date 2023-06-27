@@ -1,5 +1,9 @@
 import { Stack } from "aws-cdk-lib";
-import { Table as DynamoTable, AttributeType } from "aws-cdk-lib/aws-dynamodb";
+import {
+  Table as DynamoTable,
+  AttributeType,
+  ProjectionType,
+} from "aws-cdk-lib/aws-dynamodb";
 import { Construct } from "constructs";
 import { getSuffixFromStack } from "../util";
 
@@ -18,12 +22,21 @@ export class DataStack extends Stack {
     const prefix = props.tableNamePrefix;
     const suffix = getSuffixFromStack(this);
 
-    this.shortnerTable = new DynamoTable(this, "ShortnerTable", {
+    const table = new DynamoTable(this, "ShortnerTable", {
       partitionKey: {
         name: "id",
         type: AttributeType.STRING,
       },
       tableName: `${prefix}-${suffix}`,
     });
+
+    table.addGlobalSecondaryIndex({
+      indexName: "hashIndex",
+      partitionKey: { name: "hash", type: AttributeType.STRING },
+      projectionType: ProjectionType.INCLUDE,
+      nonKeyAttributes: ["originalUrl"],
+    });
+
+    this.shortnerTable = table;
   }
 }
