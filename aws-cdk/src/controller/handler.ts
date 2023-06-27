@@ -9,6 +9,7 @@ import { isValidURL } from "../core/util";
 const coreService = new CoreService();
 export async function handler(event: APIGatewayProxyEvent, context: Context) {
   let result: APIGatewayProxyResult;
+  const requestId = context.awsRequestId;
 
   try {
     switch (event.httpMethod) {
@@ -31,7 +32,7 @@ export async function handler(event: APIGatewayProxyEvent, context: Context) {
             body: "Bad request: Invalid URL.",
           };
         }
-        result = await coreService.createShortenedUrl(body.url);
+        result = await coreService.createShortenedUrl(body.url, requestId);
         break;
       default:
         break;
