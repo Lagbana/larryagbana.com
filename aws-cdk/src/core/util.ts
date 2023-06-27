@@ -12,16 +12,16 @@ function base62Encode(timestamp: number) {
   return output;
 }
 
-export function createdShortenedUrl(shortenedDomain: string) {
+export function createdShortenedUrl(
+  shortenedDomain: string,
+  requestId: string
+) {
   const timestamp = Date.now();
-  const urlPath = base62Encode(timestamp);
+  const partialRequestId = parseInt(requestId.substring(0, 8), 36);
+  const urlPath = base62Encode(timestamp + partialRequestId);
   const shortUrl = shortenedDomain + urlPath;
 
   return { urlPath, shortUrl };
-}
-
-export function generateId(url: string) {
-  return Buffer.from(url).toString("base64url");
 }
 
 export function isValidURL(url: any) {
