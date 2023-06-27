@@ -141,7 +141,7 @@ export const ShortenForm = () => {
   const handleCopy = useCallback(() => {
     onCopy();
     setToastVisible(true);
-  }, [shortenedUrl, onCopy]);
+  }, [onCopy]);
 
   return (
     <Wrapper>
