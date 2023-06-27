@@ -69,7 +69,9 @@ describe("handler", () => {
       body: JSON.stringify({ url: "http://example.com" }),
     } as APIGatewayProxyEvent;
 
-    const mockContext = {} as Context;
+    const mockContext = {
+      awsRequestId: "mock-request-id",
+    } as Context;
 
     const expectedResult: APIGatewayProxyResult = {
       statusCode: 201,
@@ -84,7 +86,7 @@ describe("handler", () => {
 
     expect(
       MockedServiceInstance.mock.instances[0].createShortenedUrl
-    ).toHaveBeenCalledWith("http://example.com");
+    ).toHaveBeenCalledWith("http://example.com", "mock-request-id");
     expect(result).toEqual(expectedResult);
   });
 
