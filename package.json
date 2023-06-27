@@ -31,12 +31,10 @@
   },
   "lint-staged": {
     "aws-cdk/*.{js,jsx,ts,tsx}": [
-      "eslint --fix",
-      "git add"
+      "eslint --fix"
     ],
     "aws-cdk/client/*.{js,jsx,ts,tsx}": [
-      "eslint --fix",
-      "git add"
+      "eslint --fix"
     ]
   }
 }
