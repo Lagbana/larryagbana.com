@@ -1,8 +1,8 @@
 import {
   DynamoDBClient,
-  GetItemCommand,
   PutItemCommand,
-  GetItemCommandOutput,
+  QueryCommand,
+  QueryCommandOutput,
 } from "@aws-sdk/client-dynamodb";
 import { marshall, unmarshall } from "@aws-sdk/util-dynamodb";
 import { createdShortenedUrl, generateId } from "./util";
@@ -63,24 +63,27 @@ export class CoreService {
 
   async getOriginalUrl(urlId: string): Promise<APIGatewayProxyResult> {
     const tableName = getEnvVar("SHORTNER_TABLE_NAME");
-    let getItem: GetItemCommandOutput;
+
+    const params = {
+      TableName: tableName,
+      IndexName: "hashIndex",
+      KeyConditionExpression: "hash = :h",
+      ExpressionAttributeValues: {
+        ":h": { S: urlId },
+      },
+    };
+
+    let queryResult: QueryCommandOutput;
 
     try {
-      getItem = await ddbClient.send(
-        new GetItemCommand({
-          TableName: tableName,
-          Key: {
-            hash: { S: urlId },
-          },
-        })
-      );
+      queryResult = await ddbClient.send(new QueryCommand(params));
     } catch (error) {
       console.error("Error occurred while getting item from DynamoDB:", error);
       throw error;
     }
 
-    if (getItem.Item) {
-      const unmarshalledItem = unmarshall(getItem.Item) as UrlRecord;
+    if (queryResult.Items && queryResult.Items.length > 0) {
+      const unmarshalledItem = unmarshall(queryResult.Items[0]) as UrlRecord;
       const originalUrl = unmarshalledItem.originalUrl;
 
       return {

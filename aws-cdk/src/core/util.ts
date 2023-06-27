@@ -15,11 +15,9 @@ function base62Encode(timestamp: number) {
 export function createdShortenedUrl(shortenedDomain: string) {
   const timestamp = Date.now();
   const hash = base62Encode(timestamp);
+  const shortUrl = shortenedDomain + hash;
 
-  return {
-    hash,
-    shortUrl: shortenedDomain + hash,
-  };
+  return { hash, shortUrl };
 }
 
 export function generateId(url: string) {
