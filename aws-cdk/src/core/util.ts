@@ -14,12 +14,16 @@ function base62Encode(timestamp: number) {
 
 export function createdShortenedUrl(shortenedDomain: string) {
   const timestamp = Date.now();
-  const id = base62Encode(timestamp);
+  const hash = base62Encode(timestamp);
 
   return {
-    id,
-    shortUrl: shortenedDomain + id,
+    hash,
+    shortUrl: shortenedDomain + hash,
   };
+}
+
+export function generateId(url: string) {
+  return Buffer.from(url).toString("base64url");
 }
 
 export function isValidURL(url: any) {

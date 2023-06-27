@@ -6,9 +6,9 @@ describe("Utils tests", () => {
       "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     it("should generate base62 encoded id", () => {
-      const { id } = createdShortenedUrl("http://test.com/");
-      expect(id.length).toBeGreaterThan(0);
-      [...id].forEach((char) => {
+      const { hash } = createdShortenedUrl("http://test.com/");
+      expect(hash.length).toBeGreaterThan(0);
+      [...hash].forEach((char) => {
         expect(base62Characters.includes(char)).toBe(true);
       });
     });
@@ -19,7 +19,7 @@ describe("Utils tests", () => {
       const shortenedDomain = "http://test.com/";
       const result = createdShortenedUrl(shortenedDomain);
 
-      expect(result.id.length).toBeGreaterThan(0);
+      expect(result.hash.length).toBeGreaterThan(0);
       expect(result.shortUrl).toEqual(expect.stringContaining(shortenedDomain));
     });
   });

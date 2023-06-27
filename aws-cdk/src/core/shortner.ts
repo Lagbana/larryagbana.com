@@ -5,23 +5,30 @@ import {
   GetItemCommandOutput,
 } from "@aws-sdk/client-dynamodb";
 import { marshall, unmarshall } from "@aws-sdk/util-dynamodb";
-import { createdShortenedUrl } from "./util";
+import { createdShortenedUrl, generateId } from "./util";
 import { APIGatewayProxyResult } from "aws-lambda";
 import { getEnvVar } from "../config";
 
 const ddbClient = new DynamoDBClient({});
 
-type UrlRecord = { id: string; originalUrl: string; shortUrl: string };
+type UrlRecord = {
+  id: string;
+  hash: string;
+  originalUrl: string;
+  shortUrl: string;
+};
 
 export class CoreService {
   async createShortenedUrl(
     originalUrl: string
   ): Promise<APIGatewayProxyResult> {
     const shortenedDomain = getEnvVar("SHORTENED_DOMAIN");
-    const { id, shortUrl } = createdShortenedUrl(shortenedDomain);
+    const { hash, shortUrl } = createdShortenedUrl(shortenedDomain);
+    const id = generateId(originalUrl);
 
     const record: UrlRecord = {
       id,
+      hash,
       originalUrl,
       shortUrl,
     };
@@ -63,7 +70,7 @@ export class CoreService {
         new GetItemCommand({
           TableName: tableName,
           Key: {
-            id: { S: urlId },
+            hash: { S: urlId },
           },
         })
       );
