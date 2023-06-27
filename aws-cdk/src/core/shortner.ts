@@ -13,7 +13,7 @@ const ddbClient = new DynamoDBClient({});
 
 type UrlRecord = {
   id: string;
-  hash: string;
+  urlPath: string;
   originalUrl: string;
   shortUrl: string;
 };
@@ -23,12 +23,12 @@ export class CoreService {
     originalUrl: string
   ): Promise<APIGatewayProxyResult> {
     const shortenedDomain = getEnvVar("SHORTENED_DOMAIN");
-    const { hash, shortUrl } = createdShortenedUrl(shortenedDomain);
+    const { urlPath, shortUrl } = createdShortenedUrl(shortenedDomain);
     const id = generateId(originalUrl);
 
     const record: UrlRecord = {
       id,
-      hash,
+      urlPath,
       originalUrl,
       shortUrl,
     };
@@ -66,10 +66,10 @@ export class CoreService {
 
     const params = {
       TableName: tableName,
-      IndexName: "hashIndex",
-      KeyConditionExpression: "hash = :h",
+      IndexName: "urlPathIndex",
+      KeyConditionExpression: "urlPath = :u",
       ExpressionAttributeValues: {
-        ":h": { S: urlId },
+        ":u": { S: urlId },
       },
     };
 
