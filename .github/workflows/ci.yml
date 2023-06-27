@@ -31,3 +31,5 @@ jobs:
         with:
           directory: "aws-cdk"
           client-directory: "aws-cdk/client"
+        env:
+          DISABLE_ESLINT_PLUGIN: ${{ secrets.DISABLE_ESLINT_PLUGIN }}
