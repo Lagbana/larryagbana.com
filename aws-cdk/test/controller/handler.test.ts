@@ -5,9 +5,13 @@ import {
 } from "aws-lambda";
 import { handler } from "../../src/controller/handler";
 import { CoreService } from "../../src/core/shortner";
+import { responseWithCorsHeaders } from "../../src/controller/util";
+import * as config from "../../src/config";
 
 // Create a type for the mocked version of CoreService.
 type MockedCoreService = typeof CoreService & { mock: any };
+
+jest.mock("../../src/config");
 
 jest.mock("../../src/core/shortner", () => {
   return {
@@ -27,6 +31,7 @@ describe("handler", () => {
 
   beforeEach(() => {
     MockedServiceInstance = CoreService as unknown as MockedCoreService;
+    (config.getEnvVar as jest.Mock).mockReturnValue("https://www.xhitdev.com");
   });
 
   it("returns original URL for GET request", async () => {
@@ -60,6 +65,10 @@ describe("handler", () => {
     expect(result).toEqual({
       statusCode: 200,
       body: "http://example.com",
+      headers: {
+        "Access-Control-Allow-Credentials": true,
+        "Access-Control-Allow-Origin": "https://www.xhitdev.com",
+      },
     });
   });
 
@@ -75,7 +84,11 @@ describe("handler", () => {
 
     const expectedResult: APIGatewayProxyResult = {
       statusCode: 201,
-      body: JSON.stringify({ shortenedUrl: "http://shrt.com" }),
+      body: "{shortenedUrl:http://shrt.com}",
+      headers: {
+        "Access-Control-Allow-Credentials": true,
+        "Access-Control-Allow-Origin": "https://www.xhitdev.com",
+      },
     };
 
     MockedServiceInstance.mock.instances[0].createShortenedUrl.mockResolvedValue(
@@ -103,6 +116,10 @@ describe("handler", () => {
     expect(result).toEqual({
       statusCode: 400,
       body: "Bad request: Invalid URL.",
+      headers: {
+        "Access-Control-Allow-Credentials": true,
+        "Access-Control-Allow-Origin": "https://www.xhitdev.com",
+      },
     });
   });
 
@@ -119,7 +136,7 @@ describe("handler", () => {
 
     const mockContext = {} as Context;
 
-    const error = new Error("Something went wrong");
+    const error = new Error("Something went wrong!");
     MockedServiceInstance.mock.instances[0].getOriginalUrl.mockRejectedValue(
       error
     );
@@ -128,7 +145,46 @@ describe("handler", () => {
 
     expect(result).toEqual({
       statusCode: 500,
-      body: JSON.stringify(error.message),
+      body: "Something went wrong!",
+      headers: {
+        "Access-Control-Allow-Credentials": true,
+        "Access-Control-Allow-Origin": "https://www.xhitdev.com",
+      },
     });
+  });
+
+  it("returns 405 error for unsupported HTTP method", async () => {
+    const mockEvent = {
+      httpMethod: "PUT",
+      body: JSON.stringify({ url: "http://example.com" }),
+    } as APIGatewayProxyEvent;
+
+    const mockContext = {} as Context;
+
+    const result = await handler(mockEvent, mockContext);
+
+    expect(result).toEqual({
+      statusCode: 405,
+      body: "Method not allowed",
+      headers: {
+        "Access-Control-Allow-Credentials": true,
+        "Access-Control-Allow-Origin": "https://www.xhitdev.com",
+      },
+    });
+  });
+
+  it("doesn't add CORS headers to 301 redirects", () => {
+    const response: APIGatewayProxyResult = {
+      statusCode: 301,
+      headers: {
+        Location: "https://redirect.to",
+      },
+      body: "",
+    };
+
+    const result = responseWithCorsHeaders(response, "www.example.com");
+
+    expect(result.headers["Access-Control-Allow-Origin"]).toBeUndefined();
+    expect(result.headers["Access-Control-Allow-Credentials"]).toBeUndefined();
   });
 });
