@@ -5,6 +5,8 @@ import {
 } from "aws-lambda";
 import { CoreService } from "../core/shortner";
 import { isValidURL } from "../core/util";
+import { responseWithCorsHeaders } from "./util";
+import { getEnvVar } from "../config";
 
 const coreService = new CoreService();
 export async function handler(event: APIGatewayProxyEvent, context: Context) {
@@ -25,24 +27,33 @@ export async function handler(event: APIGatewayProxyEvent, context: Context) {
         result = await coreService.getOriginalUrl(urlId);
         break;
       case "POST":
-        const body = JSON.parse(event.body) as { url: string };
-        if (!isValidURL(body.url)) {
-          return {
+        let body: { url: string };
+        if (event.body) {
+          body = JSON.parse(event.body);
+        }
+        if (body.url && !isValidURL(body.url)) {
+          result = {
             statusCode: 400,
             body: "Bad request: Invalid URL.",
           };
+          break;
         }
         result = await coreService.createShortenedUrl(body.url, requestId);
         break;
       default:
+        result = {
+          statusCode: 405,
+          body: "Method not allowed",
+        };
         break;
     }
   } catch (err) {
-    return {
+    console.error(err.message);
+    result = {
       statusCode: 500,
-      body: JSON.stringify(err.message),
+      body: "Something went wrong!",
     };
   }
 
-  return result;
+  return responseWithCorsHeaders(result, getEnvVar("CORS_ORIGIN"));
 }
