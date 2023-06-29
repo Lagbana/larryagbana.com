@@ -38,6 +38,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
           SHORTNER_BASE_URL: ${{ secrets.SHORTNER_BASE_URL }}
+          CORS_ORIGIN: ${{ secrets.CORS_ORIGIN }}
           SHORTNER_TABLE_PREFIX: ${{ secrets.SHORTNER_TABLE_PREFIX }}
           REACT_APP_ENDPOINT_API: ${{ secrets.REACT_APP_ENDPOINT_API }}
           DISABLE_ESLINT_PLUGIN: ${{ secrets.DISABLE_ESLINT_PLUGIN }}
