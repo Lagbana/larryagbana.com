@@ -12,6 +12,7 @@ import { Effect, PolicyStatement } from "aws-cdk-lib/aws-iam";
 interface LambdaStackProps extends StackProps {
   shortnerTable: ITable;
   shortnerBaseUrl: string;
+  corsOrigin: string;
 }
 export class LambdaStack extends Stack {
   public readonly lambdaIntegration: LambdaIntegration;
@@ -26,6 +27,7 @@ export class LambdaStack extends Stack {
       environment: {
         SHORTNER_TABLE_NAME: props.shortnerTable.tableName,
         SHORTENED_DOMAIN: props.shortnerBaseUrl,
+        CORS_ORIGIN: props.corsOrigin,
       },
       timeout: Duration.millis(5000),
       description:
