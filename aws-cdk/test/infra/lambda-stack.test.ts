@@ -18,6 +18,7 @@ describe("LambdaStack", () => {
     const mockLambdaStack = new LambdaStack(testApp, "MockLambdaStack", {
       shortnerTable: MOCK_TABLE,
       shortnerBaseUrl: "short.ca/",
+      corsOrigin: "https:xhitdev.ca",
     });
 
     assert = Template.fromStack(mockLambdaStack);

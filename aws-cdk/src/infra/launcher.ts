@@ -13,6 +13,7 @@ const dataStack = new DataStack(app, "ShortnerDataStack", {
 const lambdaStack = new LambdaStack(app, "ShortnerLambdaStack", {
   shortnerTable: dataStack.shortnerTable,
   shortnerBaseUrl: getEnvVar("SHORTNER_BASE_URL"),
+  corsOrigin: getEnvVar("CORS_ORIGIN"),
 });
 new ApiStack(app, "ShortnerApiStack", {
   lambdaIntegration: lambdaStack.lambdaIntegration,
