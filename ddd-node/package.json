@@ -1,0 +1,13 @@
+{
+  "name": "ddd-node",
+  "version": "1.0.0",
+  "description": "Domain driven design template with node",
+  "main": "index.js",
+  "author": "Larry Agbana",
+  "license": "MIT",
+  "dependencies": {
+    "@types/node": "^20.4.2",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.6"
+  }
+}
