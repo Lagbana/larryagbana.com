@@ -1,7 +1,7 @@
 .PHONY: install
 install:
 	python3 -m venv venv
-	. venv/bin/activate; pip install fastapi uvicorn python-dotenv openai
+	. venv/bin/activate; pip install -r requirements.txt
 
 .PHONY: requirements
 requirements:
@@ -10,3 +10,7 @@ requirements:
 .PHONY: run
 run:
 	. venv/bin/activate; uvicorn main:app --reload
+
+.PHONY: format
+format:
+	black ./
